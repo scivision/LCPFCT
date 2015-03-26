@@ -1,0 +1,370 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module shock ! in 
+    interface  ! in :shock
+        subroutine shock(nx,pyout) ! in :shock:shock.f
+            integer intent(in) :: nx
+            real dimension(202 * nx,6),intent(out),depend(nx) :: pyout
+            real dimension(202) :: rhon
+            real dimension(202) :: rvxn
+            real dimension(202) :: rvtn
+            real dimension(202) :: ergn
+            real :: relax
+            real :: rho_in
+            real :: pre_in
+            real :: vel_in
+            real :: gamma0
+            real :: rhoamb
+            real :: preamb
+            real :: velamb
+            real :: gammam
+            common /arrays/ rhon,rvxn,rvtn,ergn,relax,rho_in,pre_in,vel_in,gamma0,rhoamb,preamb,velamb,gammam
+        end subroutine shock
+        subroutine lcpfct(rhoo,rhon,i1,in,srho1,vrho1,srhon,vrhon,pbc) ! in :shock:lcpfct.f
+            real dimension(202) :: rhoo
+            real dimension(202) :: rhon
+            integer :: i1
+            integer :: in
+            real :: srho1
+            real :: vrho1
+            real :: srhon
+            real :: vrhon
+            logical :: pbc
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: hadudth
+            real dimension(202) :: nulh
+            real dimension(202) :: mulh
+            real dimension(202) :: epsh
+            real dimension(202) :: vdtodr
+            real dimension(202) :: source
+            real :: diff1
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_velo/ hadudth,nulh,mulh,epsh,vdtodr
+            common /fct_misc/ source,diff1
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+        end subroutine lcpfct
+        subroutine makegrid(radho,radhn,i1,inp,alpha) ! in :shock:lcpfct.f
+            real dimension(inp) :: radho
+            real dimension(inp),depend(inp) :: radhn
+            integer :: i1
+            integer, optional,check(len(radho)>=inp),depend(radho) :: inp=len(radho)
+            integer :: alpha
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+        end subroutine makegrid
+        subroutine velocity(uh,i1,inp,dt) ! in :shock:lcpfct.f
+            real dimension(inp) :: uh
+            integer :: i1
+            integer, optional,check(len(uh)>=inp),depend(uh) :: inp=len(uh)
+            real :: dt
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: hadudth
+            real dimension(202) :: nulh
+            real dimension(202) :: mulh
+            real dimension(202) :: epsh
+            real dimension(202) :: vdtodr
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_velo/ hadudth,nulh,mulh,epsh,vdtodr
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+        end subroutine velocity
+        subroutine sources(i1,in,dt,mode,c,d,d1,dn) ! in :shock:lcpfct.f
+            integer :: i1
+            integer :: in
+            real :: dt
+            integer :: mode
+            real dimension(202) :: c
+            real dimension(202) :: d
+            real :: d1
+            real :: dn
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            real dimension(202) :: source
+            real :: diff1
+            integer :: nind
+            real dimension(150) :: scalars
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+            common /fct_misc/ source,diff1
+            common /fct_ndex/ nind,index,scalars
+        end subroutine sources
+        subroutine cnvfct(rhoo,rhon,i1,in,srho1,vrho1,srhon,vrhon,pbc) ! in :shock:lcpfct.f
+            real dimension(202) :: rhoo
+            real dimension(202) :: rhon
+            integer :: i1
+            integer :: in
+            real :: srho1
+            real :: vrho1
+            real :: srhon
+            real :: vrhon
+            logical :: pbc
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: hadudth
+            real dimension(202) :: nulh
+            real dimension(202) :: mulh
+            real dimension(202) :: epsh
+            real dimension(202) :: vdtodr
+            real dimension(202) :: source
+            real :: diff1
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_velo/ hadudth,nulh,mulh,epsh,vdtodr
+            common /fct_misc/ source,diff1
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+        end subroutine cnvfct
+        subroutine conserve(rho,i1,in,csum) ! in :shock:lcpfct.f
+            real dimension(202) :: rho
+            integer :: i1
+            integer :: in
+            real :: csum
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+        end subroutine conserve
+        subroutine copygrid(mode,i1,in) ! in :shock:lcpfct.f
+            integer :: mode
+            integer :: i1
+            integer :: in
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: lop
+            real dimension(202) :: lnp
+            real dimension(202) :: ahp
+            real dimension(202) :: rlnp
+            real dimension(202) :: lhp
+            real dimension(202) :: rlhp
+            real dimension(202) :: rohp
+            real dimension(202) :: rnhp
+            real dimension(202) :: adugthp
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /old_grid/ lop,lnp,ahp,rlnp,lhp,rlhp,rohp,rnhp,adugthp
+        end subroutine copygrid
+        block data fctblk ! in :shock:lcpfct.f
+            real, optional,dimension(202),depend(npt) :: source=npt*0.0
+            real, optional :: diff1=0.999
+            integer, parameter,optional :: npt=202
+            common /fct_misc/ source,diff1
+        end block data fctblk
+        subroutine new_grid(radhn,i1,inp,alpha) ! in :shock:lcpfct.f
+            real dimension(inp) :: radhn
+            integer :: i1
+            integer, optional,check(len(radhn)>=inp),depend(radhn) :: inp=len(radhn)
+            integer :: alpha
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: scrh
+            real dimension(202) :: scr1
+            real dimension(202) :: diff
+            real dimension(202) :: flxh
+            real dimension(202) :: fabs
+            real dimension(202) :: fsgn
+            real dimension(202) :: term
+            real dimension(202) :: terp
+            real dimension(202) :: lnrhot
+            real dimension(202) :: lorhot
+            real dimension(202) :: rhot
+            real dimension(202) :: rhotd
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /fct_scrh/ scrh,scr1,diff,flxh,fabs,fsgn,term,terp,lnrhot,lorhot,rhot,rhotd
+        end subroutine new_grid
+        subroutine residiff(diffa) ! in :shock:lcpfct.f
+            real :: diffa
+            real dimension(202) :: source
+            real :: diff1
+            common /fct_misc/ source,diff1
+        end subroutine residiff
+        subroutine set_grid(radr,i1,in) ! in :shock:lcpfct.f
+            real :: radr
+            integer :: i1
+            integer :: in
+            real dimension(202) :: lo
+            real dimension(202) :: ln
+            real dimension(202) :: ah
+            real dimension(202) :: rln
+            real dimension(202) :: lh
+            real dimension(202) :: rlh
+            real dimension(202) :: roh
+            real dimension(202) :: rnh
+            real dimension(202) :: adugth
+            real dimension(202) :: lop
+            real dimension(202) :: lnp
+            real dimension(202) :: ahp
+            real dimension(202) :: rlnp
+            real dimension(202) :: lhp
+            real dimension(202) :: rlhp
+            real dimension(202) :: rohp
+            real dimension(202) :: rnhp
+            real dimension(202) :: adugthp
+            common /fct_grid/ lo,ln,ah,rln,lh,rlh,roh,rnh,adugth
+            common /old_grid/ lop,lnp,ahp,rlnp,lhp,rlhp,rohp,rnhp,adugthp
+        end subroutine set_grid
+        subroutine zerodiff(ind) ! in :shock:lcpfct.f
+            integer :: ind
+            real dimension(202) :: hadudth
+            real dimension(202) :: nulh
+            real dimension(202) :: mulh
+            real dimension(202) :: epsh
+            real dimension(202) :: vdtodr
+            integer :: nind
+            real dimension(150) :: scalars
+            common /fct_velo/ hadudth,nulh,mulh,epsh,vdtodr
+            common /fct_ndex/ nind,index,scalars
+        end subroutine zerodiff
+        subroutine zeroflux(ind) ! in :shock:lcpfct.f
+            integer :: ind
+            real dimension(202) :: hadudth
+            real dimension(202) :: nulh
+            real dimension(202) :: mulh
+            real dimension(202) :: epsh
+            real dimension(202) :: vdtodr
+            integer :: nind
+            real dimension(150) :: scalars
+            common /fct_velo/ hadudth,nulh,mulh,epsh,vdtodr
+            common /fct_ndex/ nind,index,scalars
+        end subroutine zeroflux
+        subroutine gasdyn(k1,kn,bc1,bcn,dt) ! in :shock:gasdyn.f
+            integer :: k1
+            integer :: kn
+            integer :: bc1
+            integer :: bcn
+            real :: dt
+            real dimension(202) :: rhon
+            real dimension(202) :: rvrn
+            real dimension(202) :: rvtn
+            real dimension(202) :: ergn
+            real :: relax
+            real :: rho_in
+            real :: pre_in
+            real :: vel_in
+            real :: gamma0
+            real :: rhoamb
+            real :: preamb
+            real :: velamb
+            real :: gammam
+            common /arrays/ rhon,rvrn,rvtn,ergn,relax,rho_in,pre_in,vel_in,gamma0,rhoamb,preamb,velamb,gammam
+        end subroutine gasdyn
+    end interface 
+end python module shock
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
