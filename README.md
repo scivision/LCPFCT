@@ -16,5 +16,5 @@ f2py3 -m shock -h shock.pyf shock.f lcpfct.f gasdyn.f
 f2py3 -c shock.pyf shock.f gasdyn.f lcpfct.f
 ```
 
-That's all! By typing ``` python plotshock.py ``` you'll see an animation of the 1-D shock, which is an 
+That's all! By typing ``` python3 plotshock.py ``` you'll see an animation of the 1-D shock, which is an 
 example from http://www.nrl.navy.mil/lcp/LCPFCT
