@@ -8,10 +8,11 @@ gfortran -O2 runshock.f shock.f lcpfct.f gasdyn.f -o shock
 ./shock  #writes fort.11 file
 python plotshock.py
 
-New way:
+New way-- 50+ times faster!:
 f2py3 -m shock -h shock.pyf shock.f lcpfct.f gasdyn.f
 f2py3 -c shock.pyf shock.f gasdyn.f lcpfct.f
-
+python plotshock.py
+#------------------------------
 from shock import shock
 >>> dir(shock)
 ['__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '__version__', 'arrays', 'conserve', 'fct_grid', 'fct_misc', 'fct_ndex', 'fct_scrh', 'fct_velo', 'gasdyn', 'lcpfct', 'makegrid', 'old_grid', 'residiff', 'set_grid', 'shock', 'sources', 'velocity', 'zerodiff', 'zeroflux']
@@ -22,14 +23,21 @@ from pandas import Panel
 from io import StringIO
 from os.path import expanduser
 from numpy import loadtxt, arange, asarray
-from matplotlib.pyplot import draw, pause,subplots
+from matplotlib.pyplot import draw, pause,subplots, show
 from time import time
 
 nx = 50
 
 def runshock():
     from shock import shock #fortran code needs f2py3 first as noted in comments
-    return shock(nx)
+    darr = shock(nx)
+    dr = darr[:,:5].reshape((-1,nx,5),order='C')
+
+    dpan = Panel(dr,major_axis=darr[:nx,5],
+                    minor_axis=('Density','Temperature','Pressure',
+                              'Velocity','Energy')) #FIXME read dt from Fortran
+
+    return dpan
 
 def readshock(fn):
     fn = expanduser(fn)
@@ -70,11 +78,13 @@ def plotshock(dat):
     fg,ax = subplots(5,1,num=1,sharex=True)
     fg.subplots_adjust(hspace=0.05)
     ht = fg.suptitle('1-D shock')
+    ax[-1].set_xlabel('x displacement')
+
     for i,j in enumerate(dat.minor_axis.values):
         ax[i].set_ylabel(j)
 
     for t,da in dat.iteritems():
-        ht.set_text('1-D shock: t={:.3f} sec.'.format(t))
+       # ht.set_text('1-D shock: t={:.3f} sec.'.format(t)) #FIXME get more variables from Fortran
         for i,(j,d) in enumerate(da.iteritems()):
             ax[i].plot(d,label=j)
         draw()
@@ -83,10 +93,9 @@ def plotshock(dat):
 
 
 if __name__ == '__main__':
-    from numpy.testing import assert_allclose
     try:
         tic = time()
-        rhon = runshock()
+        fdata = runshock()
         forttime = time()-tic
         print('fortran took {:0.3e} seconds'.format(forttime))
     except Exception as e:
@@ -98,5 +107,5 @@ if __name__ == '__main__':
     data = readshock('fort.11')
     print('reading and parsing text file took {:0.1f} times longer'.format(25*(time()-tic)/forttime))
 
-    #assert_allclose(rhon[:50,:5],data[0,:50,:],rtol=1e-4,atol=1)
-    #plotshock(data)
+    plotshock(fdata)
+    show()
