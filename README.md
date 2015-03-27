@@ -1,6 +1,9 @@
 # python-lcpfct
 NRL Flux-corrected Algorithm for Solving Generalized Continuity Equations--now in Python with Examples!
 
+
+![alt fancy plot](http://scienceopen.github.io/fast2d.png)
+
 demonstrates use of Fortran code called from Python. In this case, using Fortran code as a Python module
 is about 50 times faster than the loathsome writing Fortran output to a text file, and parsing the text
 in Python or Matlab.
