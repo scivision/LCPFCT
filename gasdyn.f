@@ -18,7 +18,9 @@ c
 C-----------------------------------------------------------------------
 
          Implicit  NONE
-         Integer   NPT, K1, K1P, BC1, BCN, K, KN, KNP, IT
+         Integer, Intent(IN)  ::  K1, KN, BC1, BCN
+         Real, Intent(IN)     ::  DT
+         Integer   NPT, K1P, K, KNP, IT
          Parameter ( NPT = 202 )
          Logical   PBC
          Real      SBC1,  SRV1,  SBCN,     SRVN,  VRHO1, VRHON
@@ -26,7 +28,7 @@ C-----------------------------------------------------------------------
          Real      MPINT(NPT), VEL(NPT),   UNIT(NPT),  ZERO(NPT)
          Real      RHOO(NPT),  RVRO(NPT),  RVTO(NPT),  ERGO(NPT)
          Real      VINT(NPT),  PRE(NPT),   MPVINT(NPT)
-         Real      DTSUB,      DT,         RELAX
+         Real      DTSUB,                  RELAX
          Data      UNIT / NPT*1.0 /,       ZERO / NPT*0.0 /
 
          Real      RHO_IN,     PRE_IN,     VEL_IN,     GAMMA0
@@ -80,42 +82,45 @@ c  BC1, BCN = 2  => an extrapolative outflow boundary condition
 c  BC1, BCN = 3  => periodic boundary conditions . . .
 c  BC1, BCN = 4  => specified boundary values (e.g. shock tube problem)
 C-----------------------------------------------------------------------
-         Go To ( 310, 320, 330, 340 ), BC1
-  310       VINT(K1)   = 0.0
+            select case(BC1)
+            case(1)
+            VINT(K1)   = 0.0
             MPINT(K1)  = - PRE(K1)
             MPVINT(K1) = 0.0
-            Go To 350
-  320       VINT(K1)   = VEL(K1)*(1.0 - RELAX) 
+            case(2)
+            VINT(K1)   = VEL(K1)*(1.0 - RELAX) 
             MPINT(K1)  = - PRE(K1)*(1.0 - RELAX) - RELAX*PRE_IN
             MPVINT(K1) = MPINT(K1)*VINT(K1)
-            Go To 350
-  330       MPVINT(K1) = 1.0/( RHON(K1) + RHON(KN) )
+            case(3)
+            MPVINT(K1) = 1.0/( RHON(K1) + RHON(KN) )
             VINT(K1)   = (VEL(K1)*RHON(KN)+VEL(KN)*RHON(K1)) *MPVINT(K1)
             MPINT(K1)  = -(PRE(K1)*RHON(KN)+PRE(KN)*RHON(K1))*MPVINT(K1)
             MPVINT(K1) = -(PRE(K1)*VEL(K1)*RHON(KN) 
      &                + PRE(KN)*VEL(KN)*RHON(K1))*MPVINT(K1)
-            Go To 350
-  340       VINT(K1)   = VEL_IN
+            case(4)
+            VINT(K1)   = VEL_IN
             MPINT(K1)  = - PRE_IN
             MPVINT(K1) = - PRE_IN*VEL_IN
-
-  350    Go To ( 410, 420, 430, 440 ), BCN
-  410       VINT(KNP)   = 0.0
+            end select
+            
+            select case(BCN)
+            case(1)
+            VINT(KNP)   = 0.0
             MPINT(KNP)  = - PRE(KN)
             MPVINT(KNP) = 0.0
-            Go To 450
-  420       VINT(KNP)   = VEL(KN)*(1.0 - RELAX)
+            case(2)
+            VINT(KNP)   = VEL(KN)*(1.0 - RELAX)
             MPINT(KNP)  = - PRE(KN)*(1.0 - RELAX) - RELAX*PREAMB
             MPVINT(KNP) = MPINT(KNP)*VINT(KNP)
-            Go To 450
-  430       VINT(KNP)   = VINT(K1)
+            case(3)
+            VINT(KNP)   = VINT(K1)
             MPINT(KNP)  = MPINT(K1)
             MPVINT(KNP) = MPVINT(K1)
-            Go To 450
-  440       VINT(KNP)   = VELAMB
+            case(4)
+            VINT(KNP)   = VELAMB
             MPINT(KNP)  = - PREAMB
             MPVINT(KNP) = - PREAMB*VELAMB
-  450    Continue
+            end select
 
 c  The velocity dependent FCT coefficients are set and the boundary 
 c  condition calculations are completed.  Here the periodic boundary 
@@ -124,7 +129,9 @@ c  specifiers are ignored in LCPFCT when PBC = .true.
 C-----------------------------------------------------------------------
          Call VELOCITY ( VINT, K1, KNP, DTSUB )
 
-         Go To ( 510, 520, 550, 540 ), BC1
+c         Go To ( 510, 520, 550, 540 ), BC1
+         select case(BC1)
+            case(1)
   510       Call ZEROFLUX ( K1 )
             SBC1  = 1.0
             SRV1  = -1.0
@@ -132,7 +139,7 @@ C-----------------------------------------------------------------------
             VRVR1 = 0.0
             VRVT1 = 0.0
             VERG1 = 0.0
-            Go To 550
+            case(2)
   520       Call ZERODIFF ( K1 )
             SBC1  = 1.0 - RELAX
             SRV1  = 1.0 - RELAX
@@ -140,15 +147,18 @@ C-----------------------------------------------------------------------
             VRVR1 = 0.0
             VRVT1 = 0.0
             VERG1 = RELAX*PRE_IN/GAMMAM
-            Go To 550
+            case(4)
   540       SBC1  = 0.0
             SRV1  = 0.0
             VRHO1 = RHO_IN
             VRVR1 = RHO_IN*VEL_IN
             VRVT1 = 0.0
             VERG1 = PRE_IN/GAMMAM + 0.5*RHO_IN*VEL_IN**2
-
-  550    Go To ( 610, 620, 650, 640 ), BCN
+            case(3)
+         end select
+c  550    Go To ( 610, 620, 650, 640 ), BCN
+         select case(BCN)
+            case(1)
   610       Call ZEROFLUX ( KNP )
             SBCN = 1.0
             SRVN = -1.0
@@ -156,7 +166,7 @@ C-----------------------------------------------------------------------
             VRVRN = 0.0
             VRVTN = 0.0
             VERGN = 0.0
-            Go To 650
+            case(2)
   620       Call ZERODIFF ( KNP )
             SBCN  = 1.0 - RELAX
             SRVN  = 1.0 - RELAX
@@ -164,14 +174,15 @@ C-----------------------------------------------------------------------
             VRVRN = 0.0
             VRVTN = 0.0
             VERGN = RELAX*PREAMB/GAMMAM
-            Go To 650
+            case(4)
   640       SBCN  = 0.0
             SRVN  = 0.0
             VRHON = RHOAMB
             VRVRN = RHOAMB*VELAMB
             VRVTN = 0.0
             VERGN = PREAMB/GAMMAM + 0.5*RHOAMB*VELAMB**2
-  650    Continue
+            case(3)
+            end select
 
 c  Integrate the continuity equations using LCPFCT . . .  
 C-----------------------------------------------------------------------
@@ -189,8 +200,8 @@ C-----------------------------------------------------------------------
 
          Call LCPFCT ( ERGO, ERGN, K1,KN, SBC1,VERG1, SBCN,VERGN, PBC )
 
-  500 Continue       ! End of halfstep-wholestep loop.
+  500 End do       ! End of halfstep-wholestep loop.
       Return
-      End
+      End Subroutine GASDYN
 
 C=======================================================================

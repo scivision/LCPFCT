@@ -4,7 +4,7 @@ Demonstration of NRL LCPFCT code in Python
 Michael Hirsch
 
 Old-fashioned way:
-gfortran -O2 runshock.f shock.f lcpfct.f gasdyn.f -o shock
+gfortran -O3 -ffast-math runshock.f shock.f lcpfct.f gasdyn.f -o shock
 ./shock  #writes fort.11 file
 python plotshock.py
 
@@ -20,9 +20,6 @@ from shock import shock
 """
 from __future__ import division
 from pandas import Panel
-from io import StringIO
-from os.path import expanduser
-from numpy import loadtxt, arange, asarray
 from matplotlib.pyplot import draw, pause,subplots, show
 from time import time
 
@@ -39,40 +36,40 @@ def runshock():
 
     return dpan
 
-def readshock(fn):
-    fn = expanduser(fn)
-
-#%% get first header
-    with open(fn,'r') as f:
-        hd = f.readline().split() #column names for Panel
-        hd2 = f.readline().split()
-    if hd2[0] != '1':
-        print('** warning, I appear to not be reading the header correctly')
-
-    nx = int(hd2[-4])
-    dt = float(hd2[-1])
-
-#%% read data frames
-    d = []; lines=''
-    with open(fn,'r') as f:
-        while True:
-            lines=''
-            #get to next record
-            line = f.readline()
-            if not line:
-                break
-            if line[0] != '1':
-                continue
-            #read the record
-            for i in range(nx):
-                lines += f.readline()
-            d.append(loadtxt(StringIO(lines), usecols=(1,2,3,4,5,6)))
-#%% setup output
-    nt = len(d)
-    t = arange(0,nt*dt,dt)
-
-    dat = asarray(d)
-    return Panel(dat[...,:5], t, dat[0,:,5], hd[1:-1])
+#def readshock(fn):
+#    fn = expanduser(fn)
+#
+##%% get first header
+#    with open(fn,'r') as f:
+#        hd = f.readline().split() #column names for Panel
+#        hd2 = f.readline().split()
+#    if hd2[0] != '1':
+#        print('** warning, I appear to not be reading the header correctly')
+#
+#    nx = int(hd2[-4])
+#    dt = float(hd2[-1])
+#
+##%% read data frames
+#    d = []; lines=''
+#    with open(fn,'r') as f:
+#        while True:
+#            lines=''
+#            #get to next record
+#            line = f.readline()
+#            if not line:
+#                break
+#            if line[0] != '1':
+#                continue
+#            #read the record
+#            for i in range(nx):
+#                lines += f.readline()
+#            d.append(loadtxt(StringIO(lines), usecols=(1,2,3,4,5,6)))
+##%% setup output
+#    nt = len(d)
+#    t = arange(0,nt*dt,dt)
+#
+#    dat = asarray(d)
+#    return Panel(dat[...,:5], t, dat[0,:,5], hd[1:-1])
 
 def plotshock(dat):
     fg,ax = subplots(5,1,num=1,sharex=True)
@@ -99,13 +96,9 @@ if __name__ == '__main__':
         forttime = time()-tic
         print('fortran took {:0.3e} seconds'.format(forttime))
     except Exception as e:
-        print('*** could not run shock via f2py, trying to read text output from previous run')
+        print('*** could not run shock via f2py')
         print(str(e))
 
-
-    tic = time()
-    data = readshock('fort.11')
-    print('reading and parsing text file took {:0.1f} times longer'.format(25*(time()-tic)/forttime))
 
     plotshock(fdata)
     show()
