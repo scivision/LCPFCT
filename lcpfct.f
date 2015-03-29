@@ -596,7 +596,8 @@ C-----------------------------------------------------------------------
           Parameter ( BIGNUM = 1.0E38 )
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
-          Real     RHOO(NPT),     RHON(NPT)
+          Real, Intent(IN)  ::   RHOO(NPT)     
+          Real, Intent(OUT) ::   RHON(NPT)
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
           Real     SCRH(NPT),     SCR1(NPT),     DIFF(NPT)
@@ -738,8 +739,8 @@ C-----------------------------------------------------------------------
           Implicit NONE
           Integer  NPT, I, I1, IN
           Parameter ( NPT = 202 )
-          Real     CSUM, RHO(NPT)
-
+          Real     RHO(NPT)
+          Real, Intent(OUT) :: CSUM
 c     /FCT_GRID/ Holds geometry, grid, area and volume information
           Real     LO(NPT),       LN(NPT),       AH (NPT)
           Real     RLN(NPT),      LH (NPT),      RLH(NPT)
