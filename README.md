@@ -2,7 +2,7 @@
 NRL Flux-Corrected Transport algorithm for Solving Generalized Continuity Equations--now in Python with Examples!
 
 
-![alt fancy plot](http://scienceopen.github.io/fast2d.gif)
+![alt fancy plot](http://blogs.bu.edu/mhirsch/files/2015/03/fast2d.gif)
 
 demonstrates use of Fortran code called from Python. In this case, using Fortran code as a Python module
 is about 50 times faster than the very slow writing Fortran output to a text file, and parsing the text
