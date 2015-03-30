@@ -8,7 +8,7 @@ f2py3 -c fast2d.pyf fast2d.f gasdyn.f lcpfct.f
 python plot_fast2d.py
 """
 from __future__ import division
-from matplotlib.pyplot import figure,draw, pause,subplots, show
+from matplotlib.pyplot import draw, pause,subplots, show
 maxtstep = 801
 
 def runfast2d():
