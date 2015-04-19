@@ -143,6 +143,5 @@ c let's pass an array out to Python!
          PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),6) = XINT(1:NX)         
       End do
 
-      Return
       End Subroutine SHOCK
 

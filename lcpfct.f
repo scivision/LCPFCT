@@ -66,10 +66,12 @@ c
 C-----------------------------------------------------------------------
 
           Implicit  NONE
-          Integer   NPT, I1, IN, I1P, INP, I
-          Real      BIGNUM, SRHO1, VRHO1, SRHON, VRHON, RHO1M, RHONP
+          Integer   NPT, I1P, INP, I
+          Integer,Intent(IN) :: I1, IN
+          Real      BIGNUM, RHO1M, RHONP
+          Real, Intent(IN) ::  SRHO1,VRHO1, SRHON, VRHON
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP
-          Logical   PBC
+          Logical, Intent(IN) ::  PBC
           Parameter ( NPT = 202 )
           Parameter ( BIGNUM = 1.0E38 )
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
@@ -191,8 +193,8 @@ C-----------------------------------------------------------------------
              RHON(I) = RLN(I) * ( LNRHOT(I) + (FLXH(I) - FLXH(I+1)) )
              SOURCE(I) = 0.0
           End do
-      Return
-      End
+
+      End Subroutine LCPFCT
 
 C=======================================================================
 
@@ -318,7 +320,7 @@ C-----------------------------------------------------------------------
           Do I = I1, INP
              ADUGTH(I) = AH(I)*(RNH(I) - ROH(I))
           End do
-      Return
+
       End Subroutine MAKEGRID
 
 C=======================================================================
@@ -409,7 +411,7 @@ C-----------------------------------------------------------------------
           VDTODR(INP) = DT2*DIFF(INP)/(RNH(INP)-RNH(IN) +
      &                                 ROH(INP)-ROH(IN))
 
-       Return
+
        End Subroutine VELOCITY
 
 C=======================================================================
@@ -445,8 +447,8 @@ C-----------------------------------------------------------------------
 
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)
-          Integer  INDEX(NINDMAX), NIND
-          Common  /FCT_NDEX/ SCALARS, NIND, INDEX 
+          Integer  INDX(NINDMAX), NIND
+          Common  /FCT_NDEX/ SCALARS, NIND, INDX 
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
           Real     SCRH(NPT),     SCR1(NPT),     DIFF(NPT)
@@ -537,12 +539,12 @@ C-----------------------------------------------------------------------
 c  + C for source terms only at a list of indices . . .
 C-----------------------------------------------------------------------
   606    Do IS = 1, NIND
-            I = INDEX(IS)
+            I = INDX(IS)
             SOURCE(I) = SOURCE(I) + SCALARS(IS)
          End do
          
          End select
-      Return
+
       End Subroutine SOURCES
 
 C=======================================================================
@@ -715,8 +717,8 @@ C-----------------------------------------------------------------------
              RHON(I) = RLN(I) * ( LNRHOT(I) + (FLXH(I) - FLXH(I+1)) )
              SOURCE(I) = 0.0
           End do
-      Return
-      End
+
+      End Subroutine CNVFCT
 
 C=======================================================================
 
@@ -753,7 +755,7 @@ C-----------------------------------------------------------------------
           Do I = I1, IN
              CSUM = CSUM + LN(I)*RHO(I)
           End do
-      Return
+
       End Subroutine CONSERVE
 
 C=======================================================================
@@ -830,8 +832,7 @@ C-----------------------------------------------------------------------
           End If
  1001     Format ( ' COPYGRID Error! MODE =', I3, ' (not 1 or 2!)' )
 
-      Return
-      End
+      End Subroutine COPYGRID
 
 C=======================================================================
 
@@ -987,12 +988,11 @@ C-----------------------------------------------------------------------
           Parameter ( NPT = 202 )
 
 c     /FCT_MISC/ Holds the source array and diffusion coefficient
-          Real     SOURCE(NPT),   DIFF1
+          Real     SOURCE(NPT), DIFF1   
           Common  /FCT_MISC/ SOURCE, DIFF1
 
           DIFF1 = DIFFA
 
-      Return
       End Subroutine RESIDIFF
 
 C=======================================================================
@@ -1058,8 +1058,7 @@ C-----------------------------------------------------------------------
           LH(INP)  = LN(IN)
           RLH(INP) = RLN(IN)
 
-      Return
-      End
+      End Subroutine SET_GRID
 
 C=======================================================================
 
@@ -1085,8 +1084,8 @@ C-----------------------------------------------------------------------
 
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)
-          Integer  INDEX(NINDMAX), NIND
-          Common  /FCT_NDEX/ SCALARS, NIND, INDEX
+          Integer  INDX(NINDMAX), NIND
+          Common  /FCT_NDEX/ SCALARS, NIND, INDX
 
 c     /FCT_VELO/ Holds velocity-dependent flux coefficients
           Real     HADUDTH(NPT),  NULH(NPT),     MULH(NPT)
@@ -1103,13 +1102,12 @@ C-----------------------------------------------------------------------
                 Stop
              End If
              Do IS = 1, NIND
-                I = INDEX(IS)
+                I = INDX(IS)
                 NULH(I) = 0.0
                 MULH(I) = 0.0
              End Do
           End If
 
-      Return
       End Subroutine ZERODIFF
 
 C=======================================================================
@@ -1136,8 +1134,8 @@ C-----------------------------------------------------------------------
 
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)
-          Integer  INDEX(NINDMAX), NIND
-          Common  /FCT_NDEX/ SCALARS, NIND, INDEX
+          Integer  INDX(NINDMAX), NIND
+          Common  /FCT_NDEX/ SCALARS, NIND, INDX
 
 c     /FCT_VELO/ Holds velocity-dependent flux coefficients
           Real     HADUDTH(NPT),  NULH(NPT),     MULH(NPT)
@@ -1155,14 +1153,11 @@ C-----------------------------------------------------------------------
                 Stop
              End If
              Do IS = 1, NIND
-                I = INDEX(IS)
+                I = INDX(IS)
                 HADUDTH(I) = 0.0
                 NULH(I) = 0.0
                 MULH(I) = 0.0
              End Do
           End If
 
-      Return
       End Subroutine ZEROFLUX
-
-C=======================================================================

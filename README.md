@@ -14,8 +14,7 @@ Prereqs:
 
 ## 2-D explosion simulation
 ```
-f2py3 -m fast2d -h fast2d.pyf fast2d.f lcpfct.f gasdyn.f
-f2py3 -c fast2d.pyf fast2d.f gasdyn.f lcpfct.f
+f2py3 -m fast2d -c fast2d.f gasdyn.f lcpfct.f 
 ```
 plot by:
 ```
@@ -24,10 +23,9 @@ python plot_fast2d.py
 
 ## 1-D shock simulation
 ```
-f2py3 -m shock -h shock.pyf shock.f lcpfct.f gasdyn.f
-f2py3 -c shock.pyf shock.f gasdyn.f lcpfct.f
+f2py3 -m shock -c shock.f gasdyn.f lcpfct.f 
 ```
-type
+which creates a shock.so file to be used in Python, to see an example type
 ``` 
 python3 plotshock.py 
 ``` 
