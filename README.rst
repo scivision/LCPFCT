@@ -1,8 +1,9 @@
 .. image:: https://codeclimate.com/github/scienceopen/pyLCPFCT/badges/gpa.svg
    :target: https://codeclimate.com/github/scienceopen/pyLCPFCT
+
 ==============
 python-lcpfct
-=============
+==============
 NRL Flux-Corrected Transport algorithm for Solving Generalized Continuity Equations--now in Python with Examples!
 
 
@@ -22,19 +23,23 @@ Install
 
 Examples
 ========
+
 2-D explosion simulation
 ---------------------------
+
 .. code:: bash
 
  $ f2py -m fast2d -c fast2d.f gasdyn.f lcpfct.f 
  $ python plot_fast2d.py
 
 
- 1-D shock simulation
+1-D shock simulation
 ---------------------
+
 .. code:: bash
- $ f2py -m shock -c shock.f gasdyn.f lcpfct.f 
- $ python plotshock.py
+
+  $ f2py -m shock -c shock.f gasdyn.f lcpfct.f 
+  $ python plotshock.py
 
 References
 ==========
