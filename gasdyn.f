@@ -20,8 +20,8 @@ C-----------------------------------------------------------------------
          Implicit  NONE
          Integer, Intent(IN)  ::  K1, KN, BC1, BCN
          Real, Intent(IN)     ::  DT
-         Integer   NPT, K1P, K, KNP, IT
-         Parameter ( NPT = 202 )
+         Integer  K1P, K, KNP, IT
+         Integer,Parameter :: NPT = 202
          Logical   PBC
          Real      SBC1,  SRV1,  SBCN,     SRVN,  VRHO1, VRHON
          Real      VRVR1, VRVRN, VRVT1,    VRVTN, VERG1, VERGN
@@ -201,7 +201,6 @@ C-----------------------------------------------------------------------
          Call LCPFCT ( ERGO, ERGN, K1,KN, SBC1,VERG1, SBCN,VERGN, PBC )
 
   500 End do       ! End of halfstep-wholestep loop.
-      Return
       End Subroutine GASDYN
 
 C=======================================================================
