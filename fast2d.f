@@ -22,15 +22,14 @@ C-----------------------------------------------------------------------
 
          Implicit  NONE
          
-         Logical doplot
-         Parameter ( doplot=.false.)
+         Logical,parameter :: doplot = .false.
          
 
-         Integer   NPT, I, J, IJ, NR, NZ, MAXSTP
-         Parameter ( NPT = 202, NR = 64, NZ=64 , MAXSTP=801)
+         Integer   I, J, IJ
+         Integer,Parameter ::  NPT = 202, NR = 64, NZ=64 , MAXSTP=801
 
-c         Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP) 
-      Real,Intent(OUT) :: PYRHO(NR,NZ,MAXSTP),PYVR(NR,NZ,MAXSTP),
+c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP) 
+         Real,Intent(OUT) :: PYRHO(NR,NZ,MAXSTP),PYVR(NR,NZ,MAXSTP),
      &                    PYVZ(NR,NZ,MAXSTP),PYERG(NR,NZ,MAXSTP) 
 
          Integer   NRP, IALFR,     BC_AXIS, BC_WALL, BC_OUTF
@@ -258,8 +257,5 @@ C-----------------------------------------------------------------------
          PYERG(:,:,ISTEP) = ERG
 
  9999 End do        ! End of the timestep loop.
-
-      Return
+ 
       End Subroutine FAST2D
-
-C=======================================================================
