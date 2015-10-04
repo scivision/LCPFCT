@@ -7,12 +7,15 @@ f2py3 -m fast2d -h fast2d.pyf fast2d.f lcpfct.f gasdyn.f
 f2py3 -c fast2d.pyf fast2d.f gasdyn.f lcpfct.f
 python plot_fast2d.py
 """
-from __future__ import division
+from __future__ import division,absolute_import
 from matplotlib.pyplot import draw, pause,subplots, show
+#
+from fast2d import fast2d #fortran code needs f2py3 first as noted in comments
+
 maxtstep = 801
 
 def runfast2d():
-    from fast2d import fast2d #fortran code needs f2py3 first as noted in comments
+
     rho,vr,vz,erg = fast2d() #fortran to c order axes
 
     return rho.transpose(2,1,0), vr.transpose(2,1,0), vz.transpose(2,1,0), erg.transpose(2,1,0)
@@ -39,8 +42,6 @@ def plotfast2d(rho,vr,vz,erg):
 
 if __name__ == '__main__':
     rho,vr,vz,erg = runfast2d()
-
-
 
     plotfast2d(rho,vr,vz,erg)
     show()

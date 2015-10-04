@@ -18,15 +18,17 @@ from shock import shock
 ['__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '__version__', 'arrays', 'conserve', 'fct_grid', 'fct_misc', 'fct_ndex', 'fct_scrh', 'fct_velo', 'gasdyn', 'lcpfct', 'makegrid', 'old_grid', 'residiff', 'set_grid', 'shock', 'sources', 'velocity', 'zerodiff', 'zeroflux']
 
 """
-from __future__ import division
+from __future__ import division,absolute_import
 from pandas import Panel
 from matplotlib.pyplot import draw, pause,subplots, show
 from time import time
+#
+from shock import shock #fortran code needs f2py3 first as noted in comments
 
 nx = 50
 
 def runshock():
-    from shock import shock #fortran code needs f2py3 first as noted in comments
+
     darr = shock(nx)
     dr = darr[:,:5].reshape((-1,nx,5),order='C')
 
@@ -90,15 +92,10 @@ def plotshock(dat):
 
 
 if __name__ == '__main__':
-    try:
-        tic = time()
-        fdata = runshock()
-        forttime = time()-tic
-        print('fortran took {:0.3e} seconds'.format(forttime))
-    except Exception as e:
-        print('*** could not run shock via f2py')
-        print(str(e))
-
+    tic = time()
+    fdata = runshock()
+    forttime = time()-tic
+    print('fortran took {:0.3e} seconds'.format(forttime))
 
     plotshock(fdata)
     show()

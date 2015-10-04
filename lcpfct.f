@@ -65,15 +65,15 @@ c     to perform special grid operations, or compute conservation sums.
 c
 C-----------------------------------------------------------------------
 
-          Implicit  NONE
-          Integer   NPT, I1P, INP, I
+          Implicit NONE
+          Integer   I1P, INP, I
           Integer,Intent(IN) :: I1, IN
-          Real      BIGNUM, RHO1M, RHONP
+          Real       RHO1M, RHONP
           Real, Intent(IN) ::  SRHO1,VRHO1, SRHON, VRHON
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP
           Logical, Intent(IN) ::  PBC
-          Parameter ( NPT = 202 )
-          Parameter ( BIGNUM = 1.0E38 )
+          Integer,Parameter :: NPT = 202
+          Real,Parameter :: BIGNUM = 1.0E38
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
           Real, Intent(IN)  ::     RHOO(NPT)
@@ -221,9 +221,9 @@ c                                 = 4 general geometry (user supplied) I
 c
 C-----------------------------------------------------------------------
 
-          Implicit  NONE
-          Integer   NPT, I1P, I, IN
-          Parameter ( NPT = 202 )
+          Implicit None
+          Integer   I1P, I, IN
+          Integer,Parameter :: NPT = 202 
 
           Integer, Intent(IN)  ::     I1, INP, ALPHA
           Real, Intent(IN)     ::     RADHO(INP), RADHN(INP)
@@ -243,7 +243,7 @@ c     /FCT_GRID/ Holds geometry, grid, area and volume information
           Real     ROH(NPT),      RNH(NPT),      ADUGTH(NPT)
           Common  /FCT_GRID/ LO, LN, AH, RLN, LH, RLH, ROH, RNH, ADUGTH
 
-          DATA     PI, FTPI /3.1415927, 4.1887902/
+          DATA     PI, FTPI /3.1415926539, 4.1887902/
 
 C-----------------------------------------------------------------------
           I1P = I1 + 1
@@ -343,8 +343,8 @@ c
 C-----------------------------------------------------------------------
 
           Implicit NONE
-          Integer  NPT, I1, I1P, I, IN, INP
-          Parameter ( NPT = 202 )
+          Integer  I1, I1P, I, IN, INP
+          Integer,Parameter :: NPT = 202 
 
           Real     UH(INP), DT, RDT, DTH, DT2, DT4, ONE3RD, ONE6TH
 
@@ -440,8 +440,8 @@ c
 C-----------------------------------------------------------------------
 
           Implicit NONE
-          Integer  NPT, NINDMAX, MODE, IS, I, I1, IN, I1P, INP
-          Parameter ( NPT = 202, NINDMAX = 150 )
+          Integer  MODE, IS, I, I1, IN, I1P, INP
+          Integer,Parameter :: NPT = 202, NINDMAX = 150
 
           Real     C(NPT), D(NPT), DT, DTH, DTQ, D1, DN
 
@@ -590,12 +590,12 @@ c
 C-----------------------------------------------------------------------
 
           Implicit  NONE
-          Integer   NPT, I1, IN, I1P, INP, I
-          Real      BIGNUM, SRHO1, VRHO1, SRHON, VRHON, RHO1M, RHONP
+          Integer   I1, IN, I1P, INP, I
+          Real      SRHO1, VRHO1, SRHON, VRHON, RHO1M, RHONP
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP
           Logical   PBC
-          Parameter ( NPT = 202 )
-          Parameter ( BIGNUM = 1.0E38 )
+          Integer,Parameter :: NPT = 202
+          Real,Parameter :: BIGNUM = 1.0E38
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
           Real, Intent(IN)  ::   RHOO(NPT)     
@@ -738,9 +738,9 @@ c     CSUM   Real              value of the conservation sum of rho    O
 c
 C-----------------------------------------------------------------------
 
-          Implicit NONE
-          Integer  NPT, I, I1, IN
-          Parameter ( NPT = 202 )
+          Implicit None
+          Integer  I, I1, IN
+          Integer,Parameter :: NPT = 202 
           Real     RHO(NPT)
           Real, Intent(OUT) :: CSUM
 c     /FCT_GRID/ Holds geometry, grid, area and volume information
@@ -781,10 +781,9 @@ c                              = 2 grid restored from OLD_GRID common  I
 c
 C-----------------------------------------------------------------------
 
-          Implicit  NONE
-          Integer   NPT, I, MODE, I1, IN
-          Parameter ( NPT = 202 )
-
+          Implicit  None
+          Integer   I, MODE, I1, IN
+          Integer,Parameter :: NPT = 202 
 c     /OLD_GRID/ Holds geometry, grid, area and volume information
           Real     LOP(NPT),      LNP(NPT),      AHP(NPT)
           Real     RLNP(NPT),     RLHP(NPT),     LHP(NPT)
@@ -839,9 +838,8 @@ C=======================================================================
       Block Data FCTBLK
 
 C-----------------------------------------------------------------------
-          Implicit  NONE
-          Integer   NPT
-          Parameter ( NPT = 202 )
+          Implicit  None
+          Integer,Parameter :: NPT = 202
 
 c     /FCT_MISC/ Holds the source array and diffusion coefficient
           Real     SOURCE(NPT),   DIFF1
@@ -876,9 +874,9 @@ c                                 = 3 for spherical geometry           I
 c                                 = 4 general geometry (user supplied) I
 c
 C-----------------------------------------------------------------------
-          Implicit  NONE
-          Integer   NPT, I1, I1P, I, IN, INP, ALPHA
-          Parameter ( NPT = 202 )
+          Implicit  None
+          Integer   I1, I1P, I, IN, INP, ALPHA
+          Integer,Parameter :: NPT = 202 
 
           Real     RADHN(INP), PI, FTPI
 
@@ -965,7 +963,7 @@ C-----------------------------------------------------------------------
           Do I = I1, INP
              ADUGTH(I) = AH(I)*(RNH(I) - ROH(I))
           End do
-      Return
+
       End Subroutine NEW_GRID
 
 C=======================================================================
@@ -982,10 +980,9 @@ c     DIFFA  Real    Replacement residual diffusion coefficient        I
 c                    Defaults to 0.999 but could be as high as 1.0000
 c
 C-----------------------------------------------------------------------
-          Implicit NONE
-          Integer  NPT
+          Implicit None
           Real, Intent(IN) ::     DIFFA
-          Parameter ( NPT = 202 )
+          Integer,Parameter:: NPT = 202 
 
 c     /FCT_MISC/ Holds the source array and diffusion coefficient
           Real     SOURCE(NPT), DIFF1   
@@ -1017,10 +1014,10 @@ c     I1       Integer            first cell index                     I
 c     IN       Integer            last cell index                      I
 c
 C-----------------------------------------------------------------------
-          Implicit  NONE
-          Integer   NPT, I1, I1P, I, IN, INP
+          Implicit  None
+          Integer   I1, I1P, I, IN, INP
           Real      RADR
-          Parameter ( NPT = 202 )
+          Integer,Parameter :: NPT = 202 
 
 c     /OLD_GRID/ Holds geometry, grid, area and volume information
           Real     LOP(NPT),      LNP(NPT),      AHP(NPT)
@@ -1078,9 +1075,9 @@ c     Argument:
 c     IND    Integer              index of interface to be reset       I
 c
 C-----------------------------------------------------------------------
-          Implicit  NONE
-          Integer   NPT, NINDMAX, IND, IS, I
-          Parameter ( NPT = 202, NINDMAX = 150 )
+          Implicit  None
+          Integer   IND, IS, I
+          Integer,Parameter :: NPT = 202, NINDMAX = 150
 
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)
@@ -1128,9 +1125,9 @@ c     Argument:
 c     IND    Integer              index of interface to be reset       I
 c
 C-----------------------------------------------------------------------
-          Implicit  NONE
-          Integer   NPT, NINDMAX, IND, IS, I
-          Parameter ( NPT = 202, NINDMAX = 150 )
+          Implicit  None
+          Integer   IND, IS, I
+          Integer,Parameter :: NPT = 202, NINDMAX = 150
 
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)

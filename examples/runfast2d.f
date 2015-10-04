@@ -2,9 +2,7 @@
         
         Implicit None
         
-        
-         Integer NPT, MAXTSTP, NGRID
-         Parameter ( NPT = 202, MAXTSTP = 801, NGRID = 64)
+        Integer,Parameter :: NPT = 202, MAXTSTP = 801, NGRID = 64
          
          Real PYOUT(NGRID,9,MAXTSTP)
          

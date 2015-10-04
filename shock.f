@@ -12,13 +12,12 @@ c     specified external values on both ends of the system.
 c
 C-----------------------------------------------------------------------
 
-         Implicit  NONE
+         Implicit NONE
          
-         Logical doplot
-         Parameter ( doplot=.false.)
-         Integer   NPT, ALPHA, BC1, BCN,   MAXSTP, IPRINT
+         Logical,parameter ::doplot=.false.
+         Integer   ALPHA, BC1, BCN,   MAXSTP, IPRINT
          Integer, Intent(IN) ::   NX
-         Parameter ( NPT = 202)
+         Integer,Parameter :: NPT = 202
          Real, Intent(OUT)   ::   PYOUT(NPT*NX,6)
 
          Integer   NXP,    MX, ISTEP,  JSTEP, I,   LOUT
