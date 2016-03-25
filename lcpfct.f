@@ -66,14 +66,15 @@ c
 C-----------------------------------------------------------------------
 
           Implicit NONE
-          Integer   I1P, INP, I
           Integer,Intent(IN) :: I1, IN
-          Real       RHO1M, RHONP
           Real, Intent(IN) ::  SRHO1,VRHO1, SRHON, VRHON
+
+          Integer   I1P, INP, I
+          Real      RHO1M, RHONP
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP
-          Logical, Intent(IN) ::  PBC
+          Logical,Intent(IN) ::  PBC
           Integer,Parameter :: NPT = 202
-          Real,Parameter :: BIGNUM = 1.0E38
+          Real,Parameter :: BIGNUM = Huge(1.)
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
           Real, Intent(IN)  ::     RHOO(NPT)
@@ -184,12 +185,12 @@ C-----------------------------------------------------------------------
 c     Correct the transported fluxes completely and then calculate the
 c     new Flux-Corrected Transport densities . . .
 C-----------------------------------------------------------------------
-          FLXH(I1) = FSGN(I1) * AMAX1 ( 0.0,
-     &                  AMIN1 ( TERM(I1), FABS(I1), TERP(I1) ) )
+          FLXH(I1) = FSGN(I1) * max ( 0.0,
+     &                  min ( TERM(I1), FABS(I1), TERP(I1) ) )
 
           Do I = I1, IN
-             FLXH(I+1) = FSGN(I+1) * AMAX1 ( 0.0,
-     &                AMIN1 ( TERM(I+1), FABS(I+1), TERP(I+1) ) )
+             FLXH(I+1) = FSGN(I+1) * MAX ( 0.0,
+     &                MIN ( TERM(I+1), FABS(I+1), TERP(I+1) ) )
              RHON(I) = RLN(I) * ( LNRHOT(I) + (FLXH(I) - FLXH(I+1)) )
              SOURCE(I) = 0.0
           End do
@@ -227,7 +228,6 @@ C-----------------------------------------------------------------------
 
           Integer, Intent(IN)  ::     I1, INP, ALPHA
           Real, Intent(IN)     ::     RADHO(INP), RADHN(INP)
-          Real     PI, FTPI
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
           Real     SCRH(NPT),     SCR1(NPT),     DIFF(NPT)
@@ -243,7 +243,7 @@ c     /FCT_GRID/ Holds geometry, grid, area and volume information
           Real     ROH(NPT),      RNH(NPT),      ADUGTH(NPT)
           Common  /FCT_GRID/ LO, LN, AH, RLN, LH, RLH, ROH, RNH, ADUGTH
 
-          DATA     PI, FTPI /3.1415926539, 4.1887902/
+          real,parameter ::     PI=4.*atan(1.), FTPI =4.1887902
 
 C-----------------------------------------------------------------------
           I1P = I1 + 1
@@ -387,7 +387,7 @@ C-----------------------------------------------------------------------
           Do I = I1, INP
              HADUDTH(I) = DT*AH(I)*UH(I) - ADUGTH(I)
              EPSH(I) = HADUDTH(I)*RLH(I)
-             SCRH(I) = MIN ( ONE6TH, ABS(EPSH(I)) )           
+             SCRH(I) = min ( ONE6TH, ABS(EPSH(I)) )
              SCRH(I) = ONE3RD*SCRH(I)**2
              HADUDTH(I) = 0.5*HADUDTH(I)
              NULH(I) =  ONE6TH + ONE3RD*(EPSH(I) + SCRH(I))*
@@ -504,7 +504,7 @@ C-----------------------------------------------------------------------
          case(3)
 c  + D is added to SOURCE in an explicit formulation . . .
 C-----------------------------------------------------------------------
-  303    Do  I = I1, IN
+  303    Do I = I1, IN
             SOURCE(I) = SOURCE(I) + DT*LO(I)*D(I)
          End do
       Return
@@ -594,8 +594,9 @@ C-----------------------------------------------------------------------
           Real      SRHO1, VRHO1, SRHON, VRHON, RHO1M, RHONP
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP
           Logical   PBC
+
           Integer,Parameter :: NPT = 202
-          Real,Parameter :: BIGNUM = 1.0E38
+          Real,Parameter :: BIGNUM = Huge(1.)
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
           Real, Intent(IN)  ::   RHOO(NPT)     
@@ -708,12 +709,12 @@ C-----------------------------------------------------------------------
 c     Correct the transported fluxes completely and then calculate the
 c     new Flux-Corrected Transport densities . . .
 C-----------------------------------------------------------------------
-          FLXH(I1) = FSGN(I1) * AMAX1 ( 0.0,
-     &                  AMIN1 ( TERM(I1), FABS(I1), TERP(I1) ) )
+          FLXH(I1) = FSGN(I1) * max ( 0.0,
+     &                  min ( TERM(I1), FABS(I1), TERP(I1) ) )
 
           Do I = I1, IN
-             FLXH(I+1) = FSGN(I+1) * AMAX1 ( 0.0,
-     &                AMIN1 ( TERM(I+1), FABS(I+1), TERP(I+1) ) )
+             FLXH(I+1) = FSGN(I+1) * max ( 0.0,
+     &                min ( TERM(I+1), FABS(I+1), TERP(I+1) ) )
              RHON(I) = RLN(I) * ( LNRHOT(I) + (FLXH(I) - FLXH(I+1)) )
              SOURCE(I) = 0.0
           End do
@@ -837,7 +838,6 @@ C=======================================================================
 
       Block Data FCTBLK
 
-C-----------------------------------------------------------------------
           Implicit  None
           Integer,Parameter :: NPT = 202
 
@@ -878,7 +878,7 @@ C-----------------------------------------------------------------------
           Integer   I1, I1P, I, IN, INP, ALPHA
           Integer,Parameter :: NPT = 202 
 
-          Real     RADHN(INP), PI, FTPI
+          Real     RADHN(INP)
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
           Real     SCRH(NPT),     SCR1(NPT),     DIFF(NPT)
@@ -894,7 +894,7 @@ c     /FCT_GRID/ Holds geometry, grid, area and volume information
           Real     ROH(NPT),      RNH(NPT),      ADUGTH(NPT)
           Common  /FCT_GRID/ LO, LN, AH, RLN, LH, RLH, ROH, RNH, ADUGTH
 
-          DATA     PI, FTPI /3.1415927, 4.1887902/
+          real,parameter::     PI=4.*atan(1.), FTPI= 4.1887902
 
 C-----------------------------------------------------------------------
           I1P = I1 + 1
@@ -985,7 +985,7 @@ C-----------------------------------------------------------------------
           Integer,Parameter:: NPT = 202 
 
 c     /FCT_MISC/ Holds the source array and diffusion coefficient
-          Real     SOURCE(NPT), DIFF1   
+          Real     SOURCE(NPT), DIFF1
           Common  /FCT_MISC/ SOURCE, DIFF1
 
           DIFF1 = DIFFA
