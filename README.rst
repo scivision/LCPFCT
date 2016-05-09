@@ -43,7 +43,7 @@ Examples
 ---------------------
 ::
 
-    ./runhock.py
+    ./runshock.py
 
 References
 ==========
