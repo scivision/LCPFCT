@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
 import setuptools #needed to enable develop
-from numpy.distutils.core import setup,Extension
 from os.path import join
 from glob import glob
 
@@ -14,6 +13,8 @@ fortranfiles=glob('*.f')
 #%%
 with open('README.rst','r') as f:
 	long_description = f.read()
+#%%
+from numpy.distutils.core import setup,Extension
 
 ext=[Extension(name='lcpfct',
                sources=fortranfiles,
