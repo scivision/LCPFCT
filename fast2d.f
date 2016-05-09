@@ -1,10 +1,5 @@
-C=======================================================================
-
-          Subroutine FAST2D(PYRHO,PYVR,PYVZ,PYERG)
-
-C-----------------------------------------------------------------------
-c
-c  BURSTING DIAPHRAGM "MUZZLE FLASH" - LCPFCT TEST # 4       August 1992
+      Subroutine FAST2D(PYRHO,PYVR,PYVZ,PYERG)
+!  BURSTING DIAPHRAGM "MUZZLE FLASH" - LCPFCT TEST # 4       August 1992
 c
 c  The problem begins with 1000:1 pressure and 100:1 density ratios 
 c  across a diaphragm inside a solid cylindrical barrel.  The ideal wall
@@ -17,10 +12,8 @@ c  R = 4.0 cm and Z = 4.0 cm where a very simple extrapolative outflow
 c  condition is expressed through the LCPFCT boundary conditions values.
 c  The outflow condition used here includes a slow relaxation to ambient 
 c  conditions far from the origin.
-c
-C-----------------------------------------------------------------------
 
-         Implicit  NONE
+         implicit none
          
          Logical,parameter :: doplot = .false.
          
@@ -30,7 +23,7 @@ C-----------------------------------------------------------------------
 
 c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP) 
          Real,Intent(OUT) :: PYRHO(NR,NZ,MAXSTP),PYVR(NR,NZ,MAXSTP),
-     &                    PYVZ(NR,NZ,MAXSTP),PYERG(NR,NZ,MAXSTP) 
+     &                       PYVZ(NR,NZ,MAXSTP),PYERG(NR,NZ,MAXSTP) 
 
          Integer   NRP, IALFR,     BC_AXIS, BC_WALL, BC_OUTF
          Integer   NZP, IALFZ,        IPRINT

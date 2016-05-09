@@ -16,30 +16,32 @@ in Python or Matlab.
 
 Install
 =======
-.. code:: bash
+For the Python wrapping Fortran::
 
- $ git clone --depth 1 https://github.com/scienceopen/pyLCPFCT
- $ conda install --file requirements.txt 
+    python setup.py develop
+
+(optional) to use just Fortran alone::
+    
+    cd bin
+    cmake ..
+    make
+
 
 Examples
 ========
 
 2-D explosion simulation
 ---------------------------
+::
 
-.. code:: bash
-
- $ f2py -m fast2d -c fast2d.f gasdyn.f lcpfct.f 
- $ python plot_fast2d.py
+    ./runfast2d.py
 
 
 1-D shock simulation
 ---------------------
+::
 
-.. code:: bash
-
-  $ f2py -m shock -c shock.f gasdyn.f lcpfct.f 
-  $ python plotshock.py
+    ./runhock.py
 
 References
 ==========

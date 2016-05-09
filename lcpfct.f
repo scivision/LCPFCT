@@ -589,7 +589,7 @@ c     LCPFCT given above.
 c
 C-----------------------------------------------------------------------
 
-          Implicit  NONE
+          implicit none
           Integer   I1, IN, I1P, INP, I
           Real      SRHO1, VRHO1, SRHON, VRHON, RHO1M, RHONP
           Real      RHOT1M, RHOTNP, RHOTD1M, RHOTDNP

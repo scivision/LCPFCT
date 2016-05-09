@@ -4,32 +4,31 @@ Demonstration of NRL LCPFCT code in Python
 Michael Hirsch
 
 Old-fashioned way:
-gfortran -O3 -ffast-math runshock.f shock.f lcpfct.f gasdyn.f -o shock
+gfortran runshock.f shock.f lcpfct.f gasdyn.f -o shock
 ./shock  #writes fort.11 file
-python plotshock.py
+python runshock.py
 
 New way-- 50+ times faster!:
 f2py3 -m shock -h shock.pyf shock.f lcpfct.f gasdyn.f
 f2py3 -c shock.pyf shock.f gasdyn.f lcpfct.f
-python plotshock.py
+python runshock.py
 #------------------------------
-from shock import shock
->>> dir(shock)
+import lcpfct
+>>> dir(lcpfct.shock)
 ['__doc__', '__file__', '__loader__', '__name__', '__package__', '__spec__', '__version__', 'arrays', 'conserve', 'fct_grid', 'fct_misc', 'fct_ndex', 'fct_scrh', 'fct_velo', 'gasdyn', 'lcpfct', 'makegrid', 'old_grid', 'residiff', 'set_grid', 'shock', 'sources', 'velocity', 'zerodiff', 'zeroflux']
 
 """
-from __future__ import division,absolute_import
 from pandas import Panel
 from matplotlib.pyplot import draw, pause,subplots, show
 from time import time
 #
-from shock import shock #fortran code needs f2py3 first as noted in comments
+import lcpfct #fortran code needs f2py3 first as noted in comments
 
 nx = 50
 
 def runshock():
 
-    darr = shock(nx)
+    darr = lcpfct.shock(nx)
     dr = darr[:,:5].reshape((-1,nx,5),order='C')
 
     dpan = Panel(dr,major_axis=darr[:nx,5],
