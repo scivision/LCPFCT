@@ -9,13 +9,13 @@ python plot_fast2d.py
 """
 from matplotlib.pyplot import draw, pause,subplots, show
 #
-import lcpfct #fortran code needs f2py3 first as noted in comments
+import fast2d #fortran code needs f2py3 first as noted in comments
 
 maxtstep = 801
 
 def runfast2d():
 
-    rho,vr,vz,erg = lcpfct.fast2d() #fortran to c order axes
+    rho,vr,vz,erg = fast2d.fast2d() #fortran to c order axes
 
     return rho.transpose(2,1,0), vr.transpose(2,1,0), vz.transpose(2,1,0), erg.transpose(2,1,0)
 

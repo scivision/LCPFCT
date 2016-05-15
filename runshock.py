@@ -22,13 +22,13 @@ from pandas import Panel
 from matplotlib.pyplot import draw, pause,subplots, show
 from time import time
 #
-import lcpfct #fortran code needs f2py3 first as noted in comments
+import shock #fortran code needs f2py3 first as noted in comments
 
 nx = 50
 
 def runshock():
 
-    darr = lcpfct.shock(nx)
+    darr = shock.shock(nx)
     dr = darr[:,:5].reshape((-1,nx,5),order='C')
 
     dpan = Panel(dr,major_axis=darr[:nx,5],

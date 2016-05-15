@@ -1,5 +1,6 @@
 .. image:: https://travis-ci.org/scienceopen/pyLCPFCT.svg?branch=master
     :target: https://travis-ci.org/scienceopen/pyLCPFCT
+.. image:: https://coveralls.io/repos/github/scienceopen/pyLCPFCT/badge.svg?branch=master :target: https://coveralls.io/github/scienceopen/pyLCPFCT?branch=master
 .. image:: https://codeclimate.com/github/scienceopen/pyLCPFCT/badges/gpa.svg
    :target: https://codeclimate.com/github/scienceopen/pyLCPFCT
 

@@ -21,6 +21,11 @@ Extension(name='shock',
                sources=['shock.f','gasdyn.f','lcpfct.f'],
                f2py_options=['--quiet'],
                extra_f77_compile_args=['-Wno-unused-label']
+               ),
+Extension(name='fast2d',
+               sources=['fast2d.f','gasdyn.f','lcpfct.f'],
+               f2py_options=['--quiet'],
+               extra_f77_compile_args=['-Wno-unused-label']
                )
     ]
 
