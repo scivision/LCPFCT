@@ -20,6 +20,10 @@ matrix:
       dist: trusty
       env:
         - osv=Linux
+      addons:
+          apt:
+            packages:
+              - gfortran
 
 install:
     - wget http://repo.continuum.io/miniconda/Miniconda-latest-$osv-x86_64.sh -O miniconda.sh
