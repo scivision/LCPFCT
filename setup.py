@@ -5,7 +5,7 @@ import setuptools #needed to enable develop
 try:
     subprocess.run(['conda','install','--yes','--file','requirements.txt'])
 except Exception as e:
-    print('you will need to install packages in requirements.txt')
+    pass
 #%%
 with open('README.rst','r') as f:
 	long_description = f.read()
@@ -34,12 +34,10 @@ Extension(name='fast2d',
 
 #%% install
 setup(name='pylcpfct',
-      version='0.1',
 	 description='Python wrapper for LCPFCT model',
 	 long_description=long_description,
 	 author='Michael Hirsch',
 	 url='https://github.com/scienceopen/pylcpfct',
-      packages=['pylcpfct'],
       ext_modules=ext,
 	  install_requires=[],
       )
