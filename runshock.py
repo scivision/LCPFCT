@@ -81,7 +81,7 @@ def plotshock(dat):
     for i,j in enumerate(dat.minor_axis.values):
         ax[i].set_ylabel(j)
 
-    for t,da in dat.iteritems():
+    for t,da in dat.items():
        # ht.set_text('1-D shock: t={:.3f} sec.'.format(t)) #FIXME get more variables from Fortran
         for i,(j,d) in enumerate(da.iteritems()):
             ax[i].plot(d,label=j)
