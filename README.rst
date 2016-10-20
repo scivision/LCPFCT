@@ -1,6 +1,10 @@
+.. image:: https://zenodo.org/badge/32956122.svg
+   :target: https://zenodo.org/badge/latestdoi/32956122
+
 .. image:: https://travis-ci.org/scienceopen/pyLCPFCT.svg?branch=master
     :target: https://travis-ci.org/scienceopen/pyLCPFCT
-.. image:: https://coveralls.io/repos/github/scienceopen/pyLCPFCT/badge.svg?branch=master :target: https://coveralls.io/github/scienceopen/pyLCPFCT?branch=master
+.. image:: https://coveralls.io/repos/github/scienceopen/pyLCPFCT/badge.svg?branch=master 
+    :target: https://coveralls.io/github/scienceopen/pyLCPFCT?branch=master
 
 ==============
 python-lcpfct
