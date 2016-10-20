@@ -8,7 +8,7 @@ python-lcpfct
 NRL Flux-Corrected Transport algorithm for Solving Generalized Continuity Equations--now in Python with Examples!
 
 
-.. image:: http://blogs.bu.edu/mhirsch/files/2015/03/fast2d.gif
+.. image:: tests/fast2d.gif
    :alt: fancy output plot animated
 
 demonstrates use of Fortran code called from Python. In this case, using Fortran code as a Python module
