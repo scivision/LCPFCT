@@ -1,12 +1,15 @@
 #!/usr/bin/env python
-import subprocess
+req = ['nose','pandas','numpy','matplotlib']
+import pip
+try:
+    import conda.cli
+    conda.cli.main('install',*req)
+except Exception as e:
+    pip.main(['install'] + req)
+# %%
 import setuptools #needed to enable develop
 
-try:
-    subprocess.call(['conda','install','--file','requirements.txt'])
-except Exception as e:
-    pass
-#%%
+# %%
 from numpy.distutils.core import setup,Extension
 
 ext=[Extension(name='lcpfct',
@@ -31,10 +34,9 @@ Extension(name='fast2d',
 
 #%% install
 setup(name='pylcpfct',
-	 description='Python wrapper for LCPFCT model',
-	 author='Michael Hirsch',
-	 url='https://github.com/scienceopen/pylcpfct',
+      packages=['pylcpfct'],
+	  description='Python wrapper for LCPFCT model',
+	  author='Michael Hirsch, Ph.D.',
+	  url='https://github.com/scivision/pylcpfct',
       ext_modules=ext,
-	  install_requires=[],
-    packages=['pylcpfct'],
       )

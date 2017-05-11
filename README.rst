@@ -1,10 +1,10 @@
 .. image:: https://zenodo.org/badge/32956122.svg
    :target: https://zenodo.org/badge/latestdoi/32956122
 
-.. image:: https://travis-ci.org/scienceopen/pyLCPFCT.svg?branch=master
-    :target: https://travis-ci.org/scienceopen/pyLCPFCT
-.. image:: https://coveralls.io/repos/github/scienceopen/pyLCPFCT/badge.svg?branch=master 
-    :target: https://coveralls.io/github/scienceopen/pyLCPFCT?branch=master
+.. image:: https://travis-ci.org/scivision/pyLCPFCT.svg?branch=master
+    :target: https://travis-ci.org/scivision/pyLCPFCT
+.. image:: https://coveralls.io/repos/github/scivision/pyLCPFCT/badge.svg?branch=master 
+    :target: https://coveralls.io/github/scivision/pyLCPFCT?branch=master
 
 ==============
 python-lcpfct
@@ -15,9 +15,8 @@ NRL Flux-Corrected Transport algorithm for Solving Generalized Continuity Equati
 .. image:: tests/fast2d.gif
    :alt: fancy output plot animated
 
-demonstrates use of Fortran code called from Python. In this case, using Fortran code as a Python module
-is about 50 times faster than the very slow writing Fortran output to a text file, and parsing the text
-in Python or Matlab.
+demonstrates use of Fortran code called from Python. 
+In this case, using Fortran code as a Python module is about 50 times faster than the very slow writing Fortran output to a text file, and parsing the text in Python or Matlab.
 
 Install
 =======
