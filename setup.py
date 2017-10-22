@@ -39,4 +39,5 @@ setup(name='pylcpfct',
 	  author='Michael Hirsch, Ph.D.',
 	  url='https://github.com/scivision/pylcpfct',
       ext_modules=ext,
+      install_requires=req,
       )
