@@ -1,15 +1,8 @@
 #!/usr/bin/env python
-req = ['nose','pandas','numpy','matplotlib']
-import pip
-try:
-    import conda.cli
-    conda.cli.main('install',*req)
-except Exception as e:
-    pip.main(['install'] + req)
-# %%
-import setuptools #needed to enable develop
-
-# %%
+install_requires = ['pandas','numpy','matplotlib']
+tests_require=['nose','coveralls']
+#
+from setuptool import develop
 from numpy.distutils.core import setup,Extension
 
 ext=[Extension(name='lcpfct',
@@ -34,10 +27,13 @@ Extension(name='fast2d',
 
 #%% install
 setup(name='pylcpfct',
-      packages=['pylcpfct'],
+      packages=find_packages(),
 	  description='Python wrapper for LCPFCT model',
 	  author='Michael Hirsch, Ph.D.',
 	  url='https://github.com/scivision/pylcpfct',
       ext_modules=ext,
-      install_requires=req,
+      install_requires=install_requires,
+      python_requires='>=2.7',
+      tests_require=tests_require,
+      extras_require={'tests':tests_require},
       )

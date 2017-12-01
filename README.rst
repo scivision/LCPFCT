@@ -3,6 +3,7 @@
 
 .. image:: https://travis-ci.org/scivision/pyLCPFCT.svg?branch=master
     :target: https://travis-ci.org/scivision/pyLCPFCT
+
 .. image:: https://coveralls.io/repos/github/scivision/pyLCPFCT/badge.svg?branch=master 
     :target: https://coveralls.io/github/scivision/pyLCPFCT?branch=master
 
@@ -22,7 +23,7 @@ Install
 =======
 For the Python wrapping Fortran::
 
-    python setup.py develop
+    pip install -e .
 
 (optional) to use just Fortran alone::
     
@@ -34,15 +35,15 @@ For the Python wrapping Fortran::
 Examples
 ========
 
-2-D explosion simulation
----------------------------
+2-D explosion
+-------------
 ::
 
     ./runfast2d.py
 
 
-1-D shock simulation
----------------------
+1-D shock 
+----------
 ::
 
     ./runshock.py
@@ -50,4 +51,4 @@ Examples
 References
 ==========
 
-http://www.nrl.navy.mil/lcp/LCPFCT
+https://www.nrl.navy.mil/lcp/LCPFCT
