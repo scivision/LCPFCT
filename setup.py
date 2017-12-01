@@ -2,7 +2,7 @@
 install_requires = ['pandas','numpy','matplotlib']
 tests_require=['nose','coveralls']
 #
-from setuptool import develop
+from setuptools import find_packages
 from numpy.distutils.core import setup,Extension
 
 ext=[Extension(name='lcpfct',
