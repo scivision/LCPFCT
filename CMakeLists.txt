@@ -1,8 +1,19 @@
-cmake_minimum_required(VERSION 2.8.12)
-project( lcpfct Fortran )
+cmake_minimum_required(VERSION 3.10)
+project(lcpfct Fortran)
 
-add_compile_options(-mtune=native -Werror=array-bounds -fexceptions -fstack-protector-all
+add_compile_options(-mtune=native -g -O3)
+
+if(${CMAKE_Fortran_COMPILER_ID} STREQUAL GNU)
+  add_compile_options(-Werror=array-bounds -fexceptions
                     -Wall -Wextra -Wpedantic -Wno-unused-label -Wline-truncation)
+  if(NOT WIN32)
+    add_compile_options(-fstack-protector-all)
+  endif()
+elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL Intel)
+
+elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL Flang)
+  link_libraries(-static-flang-libs)
+endif()
 
 add_library(lcpfct gasdyn.f lcpfct.f)
 
