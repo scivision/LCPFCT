@@ -1,6 +1,7 @@
 [![image](https://zenodo.org/badge/32956122.svg)](https://zenodo.org/badge/latestdoi/32956122)
 [![image](https://travis-ci.org/scivision/pyLCPFCT.svg?branch=master)](https://travis-ci.org/scivision/pyLCPFCT)
 [![image](https://coveralls.io/repos/github/scivision/pyLCPFCT/badge.svg?branch=master)](https://coveralls.io/github/scivision/pyLCPFCT?branch=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/g8jiwi1m4tqvb2km?svg=true)](https://ci.appveyor.com/project/scivision/lcpfct)
 
 # LCPFCT
 
