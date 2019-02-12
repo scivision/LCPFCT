@@ -7,16 +7,16 @@ else()
   add_compile_options(-O3)
 endif()
 
-if(${CMAKE_Fortran_COMPILER_ID} STREQUAL GNU)
+if(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
   add_compile_options(-mtune=native -Werror=array-bounds -fexceptions
                     -Wall -Wextra -Wpedantic -Wno-unused-label -Wline-truncation)
   if(UNIX AND NOT APPLE)
     add_compile_options(-fstack-protector-all)
   endif()
-elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL Intel)
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
 
-elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL Flang)
-  link_libraries(-static-flang-libs)
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL Flang)
+
 endif()
 
 add_library(lcpfct src/gasdyn.f src/lcpfct.f)
