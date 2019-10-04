@@ -1,7 +1,7 @@
 [![image](https://zenodo.org/badge/32956122.svg)](https://zenodo.org/badge/latestdoi/32956122)
-[![Build Status](https://travis-ci.org/scivision/LCPFCT.svg?branch=master)](https://travis-ci.org/scivision/LCPFCT)
-[![Coverage Status](https://coveralls.io/repos/github/scivision/LCPFCT/badge.svg?branch=master)](https://coveralls.io/github/scivision/LCPFCT?branch=master)
-[![Build status](https://ci.appveyor.com/api/projects/status/g8jiwi1m4tqvb2km?svg=true)](https://ci.appveyor.com/project/scivision/lcpfct)
+
+[![Actions Status](https://github.com/scivision/LCPFCT/workflows/ci/badge.svg)](https://github.com/scivision/LCPFCT/actions)
+
 
 # LCPFCT
 
@@ -23,9 +23,8 @@ For the Python wrapping Fortran:
 
 (optional) to use just Fortran alone:
 
-    cd bin
-    cmake ..
-    make
+    cmake -B build
+    cmake --build build --parallel
 
 ## Examples
 
