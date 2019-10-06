@@ -1,12 +1,6 @@
 name: ci
 
-on:
-  push:
-    paths:
-    - "**/*.py"
-  pull_request:
-    paths:
-    - "**/*.py"
+on: [push, pull_request]
 
 jobs:
 
@@ -21,7 +15,7 @@ jobs:
     - run: pip install -e .[tests,lint]
     - run: flake8
     - run: mypy .
-    - run: pytest -r a -v
+#    - run: pytest -r a -v
 
   macos:
     runs-on: macos-latest
@@ -32,7 +26,7 @@ jobs:
         python-version: '3.x'
     - run: brew install gcc
     - run: pip install -e .[tests]
-    - run: pytest -r a -v
+#    - run: pytest -r a -v
 
   windows:
     runs-on: windows-latest
@@ -44,4 +38,4 @@ jobs:
     - run: echo "[build]`ncompiler=mingw32" | Out-File -Encoding ASCII ~/pydistutils.cfg
       shell: powershell
     - run: pip install -e .[tests]
-    - run: pytest -r a -v
+#    - run: pytest -r a -v
