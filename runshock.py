@@ -14,86 +14,57 @@ f2py3 -c shock.pyf shock.f gasdyn.f lcpfct.f
 python runshock.py
 
 """
-from pandas import Panel
-from matplotlib.pyplot import draw, pause, subplots, show
-from time import time
+import xarray
+import numpy as np
+from matplotlib.pyplot import draw, pause, figure
 import shock  # fortran code needs f2py3 first as noted in comments
 
 nx = 50
 
 
-def runshock():
+def runshock() -> xarray.Dataset:
 
-    darr = shock.shock(nx)
-    dr = darr[:, :5].reshape((-1, nx, 5), order='C')
+    arr = shock.shock(nx)
+    x = arr[:nx, 5]
+    arr = arr[:, :5].reshape((-1, nx, 5), order='C')
+    dt = 0.05
+    time_sec = np.arange(0, 10.1, dt)
 
-    dpan = Panel(dr, major_axis=darr[:nx, 5],
-                 minor_axis=('Density', 'Temperature', 'Pressure',
-                             'Velocity', 'Energy'))  # FIXME read dt from Fortran
+    ds = xarray.Dataset(
+        {
+            'Density': (('time', 'x'), arr[..., 0]),
+            'Temperature': (('time', 'x'), arr[..., 1]),
+            'Pressure': (('time', 'x'), arr[..., 2]),
+            'Velocity': (('time', 'x'), arr[..., 3]),
+            'Energy': (('time', 'x'), arr[..., 4]),
+        },
+        coords={'time': time_sec, 'x': x},
+    )
 
-    return dpan
-
-# def readshock(fn):
-#    fn = expanduser(fn)
-#
-# %% get first header
-#    with open(fn,'r') as f:
-#        hd = f.readline().split() #column names for Panel
-#        hd2 = f.readline().split()
-#    if hd2[0] != '1':
-#        print('** warning, I appear to not be reading the header correctly')
-#
-#    nx = int(hd2[-4])
-#    dt = float(hd2[-1])
-#
-# %% read data frames
-#    d = []; lines=''
-#    with open(fn,'r') as f:
-#        while True:
-#            lines=''
-#            #get to next record
-#            line = f.readline()
-#            if not line:
-#                break
-#            if line[0] != '1':
-#                continue
-#            #read the record
-#            for i in range(nx):
-#                lines += f.readline()
-#            d.append(loadtxt(StringIO(lines), usecols=(1,2,3,4,5,6)))
-# %% setup output
-#    nt = len(d)
-#    t = arange(0,nt*dt,dt)
-#
-#    dat = asarray(d)
-#    return Panel(dat[...,:5], t, dat[0,:,5], hd[1:-1])
+    return ds
 
 
-def plotshock(dat):
-    fg, ax = subplots(5, 1, num=1, sharex=True)
+def plotshock(ds: xarray.Dataset):
+    fg = figure()
+    ax = fg.subplots(5, 1, sharex=True)
     fg.subplots_adjust(hspace=0.05)
     fg.suptitle('1-D shock')
     ax[-1].set_xlabel('x displacement')
 
-    for i, j in enumerate(dat.minor_axis.values):
-        ax[i].set_ylabel(j)
+    for i, k in enumerate(ds):
+        ax[i].set_ylabel(k)
 
-    for t, da in dat.items():
-        # ht.set_text('1-D shock: t={:.3f} sec.'.format(t)) #FIXME get more variables from Fortran
-        for i, (j, d) in enumerate(da.iteritems()):
-            ax[i].plot(d, label=j)
+    for j in range(len(ds.time)):
+        for i, k in enumerate(ds):
+            ax[i].plot(ds[k][j, :])
         draw()
         pause(0.5)
 
 
 def main():
-    tic = time()
     fdata = runshock()
-    forttime = time()-tic
-    print(f'fortran took {forttime:0.3e} seconds')
 
     plotshock(fdata)
-    show()
 
 
 if __name__ == '__main__':

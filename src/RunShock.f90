@@ -1,5 +1,3 @@
-program runshock
-        
 implicit none
 
 integer, parameter :: NPT = 202, &

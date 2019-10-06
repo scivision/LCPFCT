@@ -13,7 +13,7 @@ c
 C-----------------------------------------------------------------------
 
          Implicit NONE
-         
+
          Logical,parameter ::doplot=.false.
          Integer   ALPHA, BC1, BCN,   MAXSTP, IPRINT
          Integer, Intent(IN) ::   NX
@@ -21,7 +21,7 @@ C-----------------------------------------------------------------------
          Real, Intent(OUT)   ::   PYOUT(NPT*NX,6)
 
          Integer   NXP,    MX, ISTEP,  JSTEP, I,   LOUT
-         Real      MACH,       V0,         DELTAX,     DELTAT       
+         Real      MACH,       V0,         DELTAX,     DELTAT
          Real      RHOSUM,     RHVSUM,     PRESUM,     ERGSUM
          Real      VNEW(NPT),  PNEW(NPT),  TNEW(NPT),  XINT(NPT)
          Real      CSAMB,      ERG_IN,     ERGAMB,     RELAX
@@ -30,8 +30,8 @@ C-----------------------------------------------------------------------
          Real      RHO_IN,     PRE_IN,     VEL_IN,     GAMMA0
          Real      RHOAMB,     PREAMB,     VELAMB,     GAMMAM
          Real      RHON(NPT),  RVXN(NPT),  RVTN(NPT),  ERGN(NPT)
-         Common    / ARRAYS / RHON,   RVXN,   RVTN,   ERGN,   RELAX, 
-     &                        RHO_IN, PRE_IN, VEL_IN, GAMMA0, 
+         Common    / ARRAYS / RHON,   RVXN,   RVTN,   ERGN,   RELAX,
+     &                        RHO_IN, PRE_IN, VEL_IN, GAMMA0,
      &                        RHOAMB, PREAMB, VELAMB, GAMMAM
 
  1000 Format ( '1    LCPFCT Test # 2 - Progressing Shock:',
@@ -46,8 +46,8 @@ c  (change for other cases) . . .
 C-----------------------------------------------------------------------
       MACH   = 5.0  ! Mach number of the incoming ambient flow
       V0     = 3.0  ! Shock speed in the lab frame
-      DELTAX = 1.0  ! Cell size 
-      DELTAT = 0.05 ! Timestep for the calculation 
+      DELTAX = 1.0  ! Cell size
+      DELTAT = 0.05 ! Timestep for the calculation
       ALPHA  = 1    ! (1 = Cartesian, 2 = Cylindrical, 3 = Spherical)
       LOUT   =  11  ! Logical unit number of printed output device
       MX     =  10  ! Number of cells initialized behind the shock
@@ -94,7 +94,7 @@ C-----------------------------------------------------------------------
       End Do
 c one time write of column headers
       If (doplot) Then
-          Write (  LOUT, 1002 )         
+          Write (  LOUT, 1002 )
       End if
 c  Begin loop over timesteps . . .
 C-----------------------------------------------------------------------
@@ -115,7 +115,7 @@ c         If ( MOD(ISTEP-1, IPRINT) .eq. 0) Then
                PNEW(I) = GAMMAM*(ERGN(I) - 0.5*RVXN(I)*VNEW(I))
                TNEW(I) = PNEW(I)/RHON(I)
             End do
-           
+
             Call CONSERVE (RHON, 1, NX, RHOSUM)
             Call CONSERVE (PNEW, 1, NX, PRESUM)
             Call CONSERVE (RVXN, 1, NX, RHVSUM)
@@ -123,10 +123,10 @@ c         If ( MOD(ISTEP-1, IPRINT) .eq. 0) Then
             PRESUM = PRESUM/GAMMAM
            If (doplot) Then
             Write ( LOUT, 1000 ) JSTEP, NX, DELTAT
-            Write (  LOUT, 1001 ) ( I, RHON(I), TNEW(I), PNEW(I), 
+            Write (  LOUT, 1001 ) ( I, RHON(I), TNEW(I), PNEW(I),
      &           VNEW(I), ERGN(I), XINT(I), I = 1, NX )
-            Write (  LOUT, 1003 ) RHOSUM, PRESUM, RHVSUM, ERGSUM  
-           End If     
+            Write (  LOUT, 1003 ) RHOSUM, PRESUM, RHVSUM, ERGSUM
+           End If
 c         End If
 
 c  The FCT integration of the continuity equations is performed . . .
@@ -137,9 +137,9 @@ c let's pass an array out to Python!
          PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),1) = RHON(1:NX)
          PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),2) = TNEW(1:NX)
          PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),3) = PNEW(1:NX)
-         PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),4) = VNEW(1:NX)         
+         PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),4) = VNEW(1:NX)
          PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),5) = ERGN(1:NX)
-         PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),6) = XINT(1:NX)         
+         PYOUT((NX*(ISTEP-1)+1):(NX*ISTEP),6) = XINT(1:NX)
       End do
 
       End Subroutine SHOCK

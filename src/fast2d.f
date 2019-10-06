@@ -1,29 +1,29 @@
       Subroutine FAST2D(PYRHO,PYVR,PYVZ,PYERG)
 !  BURSTING DIAPHRAGM "MUZZLE FLASH" - LCPFCT TEST # 4       August 1992
 c
-c  The problem begins with 1000:1 pressure and 100:1 density ratios 
+c  The problem begins with 1000:1 pressure and 100:1 density ratios
 c  across a diaphragm inside a solid cylindrical barrel.  The ideal wall
 c  of the barrel is 10 cells thick (1.0 cm) with its inner radius given
-c  as 1.5 cm and its outer radius of 2.5 cm.  The run starts at time 
+c  as 1.5 cm and its outer radius of 2.5 cm.  The run starts at time
 c  t = 0.0 when the diaphragm at interface J = 11 (inside the barrel) is
-c  ruptured.  The flow then expands upward in a 1D manner, spilling out 
+c  ruptured.  The flow then expands upward in a 1D manner, spilling out
 c  of the barrel in a 2D flow which eventually reaches the boundaries at
 c  R = 4.0 cm and Z = 4.0 cm where a very simple extrapolative outflow
 c  condition is expressed through the LCPFCT boundary conditions values.
-c  The outflow condition used here includes a slow relaxation to ambient 
+c  The outflow condition used here includes a slow relaxation to ambient
 c  conditions far from the origin.
 
          implicit none
-         
+
          Logical,parameter :: doplot = .false.
-         
+
 
          Integer   I, J, IJ
          Integer,Parameter ::  NPT = 202, NR = 64, NZ=64 , MAXSTP=801
 
-c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP) 
+c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP)
          Real,Intent(OUT) :: PYRHO(NR,NZ,MAXSTP),PYVR(NR,NZ,MAXSTP),
-     &                       PYVZ(NR,NZ,MAXSTP),PYERG(NR,NZ,MAXSTP) 
+     &                       PYVZ(NR,NZ,MAXSTP),PYERG(NR,NZ,MAXSTP)
 
          Integer   NRP, IALFR,     BC_AXIS, BC_WALL, BC_OUTF
          Integer   NZP, IALFZ,        IPRINT
@@ -37,7 +37,7 @@ c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP)
          Real      RHO_IN,     PRE_IN,     VEL_IN,     GAMMA0
          Real      RHOAMB,     PREAMB,     VELAMB,     GAMMAM
          Real      RHON(NPT),  RVRN(NPT),  RVTN(NPT),  ERGN(NPT)
-         Common    / ARRAYS / RHON,   RVRN,   RVTN,   ERGN,   RELAX, 
+         Common    / ARRAYS / RHON,   RVRN,   RVTN,   ERGN,   RELAX,
      &                         RHO_IN, PRE_IN, VEL_IN, GAMMA0,
      &                         RHOAMB, PREAMB, VELAMB, GAMMAM
 
@@ -50,7 +50,7 @@ c        Real,   Intent(OUT)   ::   PYOUT(NR,9,MAXSTP)
      1           /, ' I, J', '    RHO axis VZ     PRE ',
      2                      '     RHO top  VR     PRE ',
      3                      '     RHO wall VZ     PRE ', / )
- 1011 Format ( I3, 1X, 3(1X, F8.2, F8.2, F8.2) ) 
+ 1011 Format ( I3, 1X, 3(1X, F8.2, F8.2, F8.2) )
 
 c  The 2D barrel explosion program control parameters are specified.
 c  (Change here to run other cases) . . .
@@ -70,9 +70,9 @@ c      MAXSTP  = 801  ! Maximum number of timesteps of length DT
       DTMAX = 2.0E-7 ! Maximum timestep allowed in the computation
       DT    = 1.0E-9 ! Initial (small guess) for starting timestep
 
-c  Initialize the test problem geometry, a cylindrical shell JCTOP cells 
-c  high in Z (indexed by J) which extends from the left of cell ICIN to 
-c  the right of cell ICOUT in X (indexed by I).  
+c  Initialize the test problem geometry, a cylindrical shell JCTOP cells
+c  high in Z (indexed by J) which extends from the left of cell ICIN to
+c  the right of cell ICOUT in X (indexed by I).
 C-----------------------------------------------------------------------
       ICIN    =  16  ! Number of the innermost radial cell in the barrel
       ICOUT   =  25  ! Number of the outermost radial cell in the barrel
@@ -134,8 +134,8 @@ C-----------------------------------------------------------------------
          VZMAX = 0.0
          Do J = 1, NZ
            Do I = 1, NR
-            VTYPICAL = ERG(I,J)/RHO(I,J) 
-            VZMAX = MAX ( VTYPICAL, VZMAX ) 
+            VTYPICAL = ERG(I,J)/RHO(I,J)
+            VZMAX = MAX ( VTYPICAL, VZMAX )
            End do
          End do
          VZMAX = SQRT ( VZMAX )
@@ -160,11 +160,11 @@ C-----------------------------------------------------------------------
      &                  (RVR(64,IJ)**2 + RVZ(64,IJ)**2)/RHO(64,IJ))
 c                write (*,*) ISTEP
 c                PYOUT(IJ,:,ISTEP) = DIN
-            End do  
+            End do
           End If
 
-c  Integrate the fluid equations in the radial direction (indexed by I). 
-c  The outer boundary condition at interface I = NR+1 is an extra- 
+c  Integrate the fluid equations in the radial direction (indexed by I).
+c  The outer boundary condition at interface I = NR+1 is an extra-
 c  polation from the interior cell values with a slow relaxation to
 c  the known distant ambient conditions . . .
 C-----------------------------------------------------------------------
@@ -194,20 +194,20 @@ C-----------------------------------------------------------------------
                Call GASDYN ( 1, NR, BC_AXIS, BC_OUTF, DT )
             End If
 
-c  Put the data back into the 2D arrays in the radial direction . . .    
+c  Put the data back into the 2D arrays in the radial direction . . .
 C-----------------------------------------------------------------------
             Do I = 1, NR
                RHO(I,J) = RHON(I)
                RVR(I,J) = RVRN(I)
                RVZ(I,J) = RVTN(I)
                ERG(I,J) = ERGN(I)
-            End do   
+            End do
          End do     ! End loop integrating the NZ rows.
 
-c  Integrate along the axials (indexing in J) which reach from the 
+c  Integrate along the axials (indexing in J) which reach from the
 c  lower active J cell (1 or JCTOP+1) to the upper boundary.  The
-c  upper boundary condition at interface J = NZ+1 (BCN = 2 ) is an 
-c  extrapolation from the interior cell values with a slow relaxation 
+c  upper boundary condition at interface J = NZ+1 (BCN = 2 ) is an
+c  extrapolation from the interior cell values with a slow relaxation
 c  to the known distant ambient conditions . . .
 C-----------------------------------------------------------------------
          Call MAKEGRID ( Z, Z, 1, NZP, IALFZ )
@@ -222,7 +222,7 @@ C-----------------------------------------------------------------------
                RVRN(J) = RVZ(I,J)
                ERGN(J) = ERG(I,J)
             End do
-c  Integrate along the axials either from the lower solid boundary at 
+c  Integrate along the axials either from the lower solid boundary at
 c  interface J = 1 or from the top of the barrel at J = 21 for cells
 c  with I = ICIN to ICOUT . . .
 C-----------------------------------------------------------------------
@@ -230,25 +230,25 @@ C-----------------------------------------------------------------------
                Call GASDYN ( JCTOP+1, NZ, BC_WALL, BC_OUTF, DT)
             Else
                Call GASDYN ( 1, NZ, BC_WALL, BC_OUTF, DT )
-            End If 
+            End If
 
-c  Put the data back into the 2D arrays in the axial direction . . .    
+c  Put the data back into the 2D arrays in the axial direction . . .
 C-----------------------------------------------------------------------
             Do J = 1, NZ
                RHO(I,J) = RHON(J)
                RVR(I,J) = RVTN(J)
                RVZ(I,J) = RVRN(J)
                ERG(I,J) = ERGN(J)
-            End do   
+            End do
          End do     ! End loop integrating the NR columns.
 
          TIME = TIME + DT
-         
+
          PYRHO(:,:,ISTEP) = RHO
          PYVR(:,:,ISTEP)  = RVR
          PYVZ(:,:,ISTEP)  = RVZ
          PYERG(:,:,ISTEP) = ERG
 
  9999 End do        ! End of the timestep loop.
- 
+
       End Subroutine FAST2D

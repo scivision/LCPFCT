@@ -1,5 +1,3 @@
-program runfast2d
-
 implicit none
 
 integer, parameter :: MAXTSTP = 801, NGRID = 64
@@ -11,4 +9,4 @@ call fast2d(pyRho,pyVR,pyVZ,pyErg)
 
 !write (*,*) PYOUT(50,1,:)
 
-end program 
+end program

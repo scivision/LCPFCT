@@ -224,7 +224,7 @@ C-----------------------------------------------------------------------
 
           Implicit None
           Integer   I1P, I, IN
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
 
           Integer, Intent(IN)  ::     I1, INP, ALPHA
           Real, Intent(IN)     ::     RADHO(INP), RADHN(INP)
@@ -282,7 +282,7 @@ C-----------------------------------------------------------------------
              DIFF(I+1) = RNH(I+1)*RNH(I+1)
              LN(I) = PI*(DIFF(I+1) - DIFF(I))
           End do
-          
+
           case(3)
 c  Spherical Coordinates: RADIAL . . .
 C-----------------------------------------------------------------------
@@ -298,8 +298,8 @@ C-----------------------------------------------------------------------
              LO(I) = FTPI*(SCR1(I+1) - SCR1(I))
              LN(I) = FTPI*(DIFF(I+1) - DIFF(I))
           End do
-            
-          case(4)  
+
+          case(4)
 c  Special Coordinates: Areas and Volumes are User Supplied . . .
 C-----------------------------------------------------------------------
           end select
@@ -344,7 +344,7 @@ C-----------------------------------------------------------------------
 
           Implicit NONE
           Integer  I1, I1P, I, IN, INP
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
 
           Real     UH(INP), DT, RDT, DTH, DT2, DT4, ONE3RD, ONE6TH
 
@@ -448,7 +448,7 @@ C-----------------------------------------------------------------------
 c     /FCT_NDEX/ Holds a scalar list of special cell information . . .
           Real     SCALARS(NINDMAX)
           Integer  INDX(NINDMAX), NIND
-          Common  /FCT_NDEX/ SCALARS, NIND, INDX 
+          Common  /FCT_NDEX/ SCALARS, NIND, INDX
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
           Real     SCRH(NPT),     SCR1(NPT),     DIFF(NPT)
@@ -520,7 +520,7 @@ C-----------------------------------------------------------------------
          End do
          SOURCE(I1) = SOURCE(I1) + SCRH(I1P) - SCRH(I1)
       Return
-        
+
          case(5)
 c  + C*GRAD(D) is computed using interface data . . .
 C-----------------------------------------------------------------------
@@ -542,7 +542,7 @@ C-----------------------------------------------------------------------
             I = INDX(IS)
             SOURCE(I) = SOURCE(I) + SCALARS(IS)
          End do
-         
+
          End select
 
       End Subroutine SOURCES
@@ -599,7 +599,7 @@ C-----------------------------------------------------------------------
           Real,Parameter :: BIGNUM = Huge(1.)
 c     BIGNUM = Machine Dependent Largest Number - Set By The User!!!!
 
-          Real, Intent(IN)  ::   RHOO(NPT)     
+          Real, Intent(IN)  ::   RHOO(NPT)
           Real, Intent(OUT) ::   RHON(NPT)
 
 c     /FCT_SCRH/ Holds scratch arrays for use by LCPFCT and CNVFCT
@@ -741,7 +741,7 @@ C-----------------------------------------------------------------------
 
           Implicit None
           Integer  I, I1, IN
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
           Real     RHO(NPT)
           Real, Intent(OUT) :: CSUM
 c     /FCT_GRID/ Holds geometry, grid, area and volume information
@@ -784,7 +784,7 @@ C-----------------------------------------------------------------------
 
           Implicit  None
           Integer   I, MODE, I1, IN
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
 c     /OLD_GRID/ Holds geometry, grid, area and volume information
           Real     LOP(NPT),      LNP(NPT),      AHP(NPT)
           Real     RLNP(NPT),     RLHP(NPT),     LHP(NPT)
@@ -876,7 +876,7 @@ c
 C-----------------------------------------------------------------------
           Implicit  None
           Integer   I1, I1P, I, IN, INP, ALPHA
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
 
           Real     RADHN(INP)
 
@@ -928,7 +928,7 @@ C-----------------------------------------------------------------------
              DIFF(I+1) = RNH(I+1)*RNH(I+1)
              LN(I) = PI*(DIFF(I+1) - DIFF(I))
           End do
-          
+
           case(3)
 c  Spherical Coordinates: RADIAL . . .
 C-----------------------------------------------------------------------
@@ -941,7 +941,7 @@ C-----------------------------------------------------------------------
              AH(I) = FTPI*(SCRH(I) + RNH(I)*RNH(I))
              LN(I) = FTPI*(DIFF(I+1) - DIFF(I))
           End do
-          
+
           case(4)
 c  Special Coordinates: Areas and Volumes are User Supplied . . .
 C-----------------------------------------------------------------------
@@ -951,7 +951,7 @@ c  Additional system independent geometric variables . . .
 C-----------------------------------------------------------------------
           Do I = I1, IN
              RLN(I) = 1.0/LN(I)
-          End do   
+          End do
           LH(I1)  = LN(I1)
           RLH(I1) = RLN(I1)
           Do I = I1P, IN
@@ -982,7 +982,7 @@ c
 C-----------------------------------------------------------------------
           Implicit None
           Real, Intent(IN) ::     DIFFA
-          Integer,Parameter:: NPT = 202 
+          Integer,Parameter:: NPT = 202
 
 c     /FCT_MISC/ Holds the source array and diffusion coefficient
           Real     SOURCE(NPT), DIFF1
@@ -1017,7 +1017,7 @@ C-----------------------------------------------------------------------
           Implicit  None
           Integer   I1, I1P, I, IN, INP
           Real      RADR
-          Integer,Parameter :: NPT = 202 
+          Integer,Parameter :: NPT = 202
 
 c     /OLD_GRID/ Holds geometry, grid, area and volume information
           Real     LOP(NPT),      LNP(NPT),      AHP(NPT)

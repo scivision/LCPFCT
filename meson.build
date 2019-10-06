@@ -1,16 +1,26 @@
-project('lcpfct', 'fortran', default_options : ['default_library=static'])
+project('lcpfct', 'fortran',
+  default_options : ['default_library=static', 'buildtype=release'])
 
 fc = meson.get_compiler('fortran')
+
 if fc.get_id() == 'gcc'
-  add_global_arguments('-Wno-unused-label', '-Wline-truncation', language : 'fortran')
+  add_project_arguments('-mtune=native', '-Werror=array-bounds', '-Wall', '-Wextra', '-Wpedantic', '-Wno-unused-label', '-Wline-truncation', language: 'fortran')
 endif
 
 lcpfct = library('lcpfct', 'src/gasdyn.f', 'src/lcpfct.f')
 
-fast2d = executable('fast2d', 'src/RunFast2d.f90', 'src/fast2d.f', link_with : lcpfct)
+fast2d_exe = executable('fast2d', 'src/RunFast2d.f90', 'src/fast2d.f',
+  link_with: lcpfct)
+test('Shock2d', fast2d_exe)
 
-shock = executable('shock', 'src/RunShock.f90', 'src/shock.f', link_with : lcpfct)
+shock_exe = executable('shock', 'src/RunShock.f90', 'src/shock.f',
+  link_with: lcpfct)
+test('Shock1d', shock_exe)
 
-convect = executable('convect', 'src/convect.f', link_with : lcpfct)
+convect_exe = executable('convect', 'src/convect.f',
+  link_with: lcpfct)
+test('Convection', convect_exe)
 
-diaphragm = executable('diaphragm', 'src/diaphragm.f', link_with : lcpfct)
+diaphragm_exe = executable('diaphragm', 'src/diaphragm.f',
+  link_with: lcpfct)
+test('Diaphragm',  diaphragm_exe)
