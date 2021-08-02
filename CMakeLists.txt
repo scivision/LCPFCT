@@ -1,19 +1,13 @@
-cmake_minimum_required(VERSION 3.1)
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Debug or Release")
-endif()
-project(lcpfct Fortran)
+cmake_minimum_required(VERSION 3.14...3.21)
+
+project(lcpfct LANGUAGES Fortran)
+
 enable_testing()
 
 
 if(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
   add_compile_options(-mtune=native -Werror=array-bounds
-                    -Wall -Wextra -Wpedantic -Wno-unused-label -Wline-truncation)
-
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
-
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL Flang)
-
+                    -Wall -Wno-unused-label -Werror=line-truncation)
 endif()
 
 add_library(lcpfct src/gasdyn.f src/lcpfct.f)

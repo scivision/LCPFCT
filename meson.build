@@ -4,7 +4,7 @@ project('lcpfct', 'fortran',
 fc = meson.get_compiler('fortran')
 
 if fc.get_id() == 'gcc'
-  add_project_arguments('-mtune=native', '-Werror=array-bounds', '-Wall', '-Wextra', '-Wpedantic', '-Wno-unused-label', '-Wline-truncation', language: 'fortran')
+  add_project_arguments('-mtune=native', '-Werror=array-bounds', '-Wno-unused-label', '-Werror=line-truncation', language: 'fortran')
 endif
 
 lcpfct = library('lcpfct', 'src/gasdyn.f', 'src/lcpfct.f')

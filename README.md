@@ -1,9 +1,8 @@
-[![image](https://zenodo.org/badge/32956122.svg)](https://zenodo.org/badge/latestdoi/32956122)
+# LCPFCT
 
+[![image](https://zenodo.org/badge/32956122.svg)](https://zenodo.org/badge/latestdoi/32956122)
 [![Actions Status](https://github.com/scivision/LCPFCT/workflows/ci/badge.svg)](https://github.com/scivision/LCPFCT/actions)
 
-
-# LCPFCT
 
 NRL Flux-Corrected Transport algorithm for Solving Generalized
 Continuity Equations--now in Python with Examples!

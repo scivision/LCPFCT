@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import setuptools  # noqa: F401
 from numpy.distutils.core import setup, Extension
 from pathlib import Path
